@@ -1,0 +1,55 @@
+import pandas
+from sklearn import ensemble,cross_validation,linear_model,feature_selection,svm
+import features
+import ml_metrics
+import numpy as np
+import time
+import os
+import itertools
+import logging
+import sys
+
+
+train = pandas.read_table('Data/train.csv',sep=',')
+
+
+start = time.time()
+rf = ensemble.GradientBoostingClassifier(subsample=0.5,n_estimators=1000, learn_rate=0.05)
+# rf = linear_model.RidgeCV(score_func=ml_metrics.auc)
+kf = cross_validation.KFold(len(train),5,indices=False)
+for fold,(train_i,test_i) in enumerate(kf):
+		ftrain = train[train_i]
+		ftest = train[test_i]
+		ytrain = np.array(ftrain.Insult).astype('float64')
+		bag = features.train_bag(ftrain.Comment,1200,y=ytrain)	
+		fea =  features.bag_representation(bag, ftrain.Comment)
+	
+		rf.fit(fea,ytrain)
+		logging.info("started fold %d %f" % (fold,time.time() - start))
+		ypred = rf.predict_proba(fea)[:,1]
+		logging.info("%d train auc %f" % (fold,ml_metrics.auc(ytrain,ypred)))
+		fea =  features.bag_representation(bag, ftest.Comment)
+		ytest = np.array(ftest.Insult).astype('float64')
+		ypred = rf.predict_proba(fea)[:,1]
+		logging.info("%d test auc %f" % (fold,ml_metrics.auc(ytest,ypred)))
+test = pandas.read_table('Data/test.csv',sep=',')
+
+ytrain = np.array(train.Insult).astype('float64')
+bag = features.train_bag(train.Comment,1200,y=ytrain)
+fea = features.bag_representation(bag, train.Comment)
+
+rf.fit(fea,ytrain)
+fea = features.bag_representation(bag, test.Comment)
+ypred = rf.predict_proba(fea)[:,1]
+submission = pandas.read_table('Data/sample_submission_null.csv',sep=',')
+submission['Insult'] = ypred
+
+for x in itertools.count(1):
+		filename = "submissions/submission%d.csv" % x
+		if os.path.exists(filename):
+			next
+		else:
+			logging.info("saved to %s" % filename)
+			submission.to_csv(filename,index=False)
+			break
+print "Done"

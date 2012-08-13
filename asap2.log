@@ -1,0 +1,1621 @@
+2012-08-09 02:05:29,664 : INFO : terminated 2 lemmatizer processes
+2012-08-09 02:05:53,898 : INFO : terminated 2 lemmatizer processes
+2012-08-09 02:06:34,431 : INFO : limiting 13344 features to 500
+2012-08-09 02:07:07,831 : INFO : limiting 13383 features to 500
+2012-08-09 02:07:40,940 : INFO : limiting 13241 features to 500
+2012-08-09 02:08:14,392 : INFO : limiting 13487 features to 500
+2012-08-09 02:08:47,765 : INFO : limiting 13253 features to 500
+2012-08-09 02:09:05,308 : INFO : terminated 2 lemmatizer processes
+2012-08-09 02:13:02,218 : INFO : limiting 13344 features to 500
+2012-08-09 02:13:45,281 : INFO : limiting 13383 features to 500
+2012-08-09 02:14:29,793 : INFO : limiting 13241 features to 500
+2012-08-09 02:15:15,363 : INFO : limiting 13487 features to 500
+2012-08-09 02:15:58,089 : INFO : limiting 13253 features to 500
+2012-08-09 02:16:25,995 : INFO : terminated 2 lemmatizer processes
+2012-08-09 02:23:10,934 : INFO : limiting 13344 features to 500
+2012-08-09 02:23:50,119 : INFO : limiting 13383 features to 500
+2012-08-09 02:24:30,174 : INFO : limiting 13241 features to 500
+2012-08-09 02:25:09,475 : INFO : limiting 13487 features to 500
+2012-08-09 02:25:48,196 : INFO : limiting 13253 features to 500
+2012-08-09 02:26:11,873 : INFO : terminated 2 lemmatizer processes
+2012-08-09 02:29:37,407 : INFO : limiting 13344 features to 500
+2012-08-09 02:30:42,638 : INFO : terminated 2 lemmatizer processes
+2012-08-09 02:32:53,661 : INFO : limiting 13344 features to 10000
+2012-08-09 02:52:37,318 : INFO : limiting 13344 features to 500
+2012-08-09 02:53:28,809 : INFO : limiting 13383 features to 500
+2012-08-09 02:54:20,173 : INFO : limiting 13241 features to 500
+2012-08-09 02:55:11,831 : INFO : limiting 13487 features to 500
+2012-08-09 02:56:02,943 : INFO : limiting 13253 features to 500
+2012-08-09 02:56:38,861 : INFO : terminated 2 lemmatizer processes
+2012-08-09 06:19:03,658 : INFO : limiting 13344 features to 500
+2012-08-09 06:20:11,170 : INFO : limiting 13383 features to 500
+2012-08-09 06:21:19,498 : INFO : limiting 13241 features to 500
+2012-08-09 06:22:25,372 : INFO : limiting 13487 features to 500
+2012-08-09 06:23:30,321 : INFO : limiting 13253 features to 500
+2012-08-09 06:24:39,335 : INFO : limiting 15302 features to 500
+2012-08-09 06:25:36,121 : INFO : terminated 2 lemmatizer processes
+2012-08-09 06:32:44,217 : INFO : limiting 13344 features to 500
+2012-08-09 06:33:31,252 : INFO : started fold 0 63.461963
+2012-08-09 06:33:31,339 : INFO : 0 train auc 0.863907
+2012-08-09 06:33:35,865 : INFO : 0 test auc 0.845804
+2012-08-09 06:33:51,700 : INFO : limiting 13383 features to 500
+2012-08-09 06:34:37,709 : INFO : started fold 1 129.919784
+2012-08-09 06:34:37,781 : INFO : 1 train auc 0.871267
+2012-08-09 06:34:42,266 : INFO : 1 test auc 0.764840
+2012-08-09 06:34:57,553 : INFO : limiting 13241 features to 500
+2012-08-09 06:35:43,018 : INFO : started fold 2 195.228374
+2012-08-09 06:35:43,103 : INFO : 2 train auc 0.875159
+2012-08-09 06:35:47,896 : INFO : 2 test auc 0.789691
+2012-08-09 06:36:03,977 : INFO : limiting 13487 features to 500
+2012-08-09 06:36:49,473 : INFO : started fold 3 261.683508
+2012-08-09 06:36:49,546 : INFO : 3 train auc 0.875573
+2012-08-09 06:36:53,751 : INFO : 3 test auc 0.779141
+2012-08-09 06:37:09,066 : INFO : limiting 13253 features to 500
+2012-08-09 06:37:53,914 : INFO : started fold 4 326.124697
+2012-08-09 06:37:53,986 : INFO : 4 train auc 0.878946
+2012-08-09 06:37:58,646 : INFO : 4 test auc 0.765615
+2012-08-09 06:38:18,093 : INFO : limiting 15302 features to 500
+2012-08-09 06:39:30,835 : INFO : terminated 2 lemmatizer processes
+2012-08-09 06:46:58,133 : INFO : limiting 13344 features to 1000
+2012-08-09 06:48:14,330 : INFO : started fold 0 92.084884
+2012-08-09 06:48:14,448 : INFO : 0 train auc 0.883183
+2012-08-09 06:48:19,565 : INFO : 0 test auc 0.847445
+2012-08-09 06:48:35,599 : INFO : limiting 13383 features to 1000
+2012-08-09 06:50:04,667 : INFO : started fold 1 202.422256
+2012-08-09 06:50:04,793 : INFO : 1 train auc 0.885649
+2012-08-09 06:50:10,237 : INFO : 1 test auc 0.796631
+2012-08-09 06:50:26,313 : INFO : limiting 13241 features to 1000
+2012-08-09 06:51:43,754 : INFO : started fold 2 301.509557
+2012-08-09 06:51:43,907 : INFO : 2 train auc 0.885076
+2012-08-09 06:51:49,299 : INFO : 2 test auc 0.806465
+2012-08-09 06:52:06,192 : INFO : limiting 13487 features to 1000
+2012-08-09 06:53:34,084 : INFO : started fold 3 411.839132
+2012-08-09 06:53:34,236 : INFO : 3 train auc 0.887347
+2012-08-09 06:53:39,572 : INFO : 3 test auc 0.805701
+2012-08-09 06:53:57,055 : INFO : limiting 13253 features to 1000
+2012-08-09 06:55:19,187 : INFO : started fold 4 516.941865
+2012-08-09 06:55:19,337 : INFO : 4 train auc 0.890614
+2012-08-09 06:55:25,006 : INFO : 4 test auc 0.782677
+2012-08-09 06:55:45,358 : INFO : limiting 15302 features to 1000
+2012-08-09 06:57:42,399 : INFO : saved to submissions/submission1.csv
+2012-08-09 06:57:42,645 : INFO : terminated 2 lemmatizer processes
+2012-08-09 07:03:04,036 : INFO : limiting 13344 features to 4000
+2012-08-09 07:33:35,569 : INFO : started fold 0 1847.435392
+2012-08-09 07:33:36,200 : INFO : 0 train auc 0.960506
+2012-08-09 07:33:45,390 : INFO : 0 test auc 0.863658
+2012-08-09 07:34:01,690 : INFO : limiting 13383 features to 4000
+2012-08-09 07:36:00,901 : INFO : terminated 2 lemmatizer processes
+2012-08-09 07:50:22,644 : INFO : terminated 2 lemmatizer processes
+2012-08-09 07:51:30,575 : INFO : limiting 13344 features to 800
+2012-08-09 07:51:30,678 : INFO : terminated 2 lemmatizer processes
+2012-08-09 07:57:55,023 : INFO : limiting 13344 features to 800
+2012-08-09 07:57:55,101 : INFO : terminated 2 lemmatizer processes
+2012-08-09 08:01:01,681 : INFO : limiting 13344 features to 800
+2012-08-09 08:04:19,812 : INFO : started fold 0 214.484065
+2012-08-09 08:04:20,125 : INFO : 0 train auc 0.938115
+2012-08-09 08:04:24,809 : INFO : 0 test auc 0.874907
+2012-08-09 08:04:40,208 : INFO : limiting 13383 features to 800
+2012-08-09 08:07:50,568 : INFO : started fold 1 425.240489
+2012-08-09 08:07:50,880 : INFO : 1 train auc 0.940310
+2012-08-09 08:07:55,748 : INFO : 1 test auc 0.794570
+2012-08-09 08:08:11,041 : INFO : limiting 13241 features to 800
+2012-08-09 08:11:20,459 : INFO : started fold 2 635.130872
+2012-08-09 08:11:20,764 : INFO : 2 train auc 0.941173
+2012-08-09 08:11:25,726 : INFO : 2 test auc 0.820341
+2012-08-09 08:11:41,465 : INFO : limiting 13487 features to 800
+2012-08-09 08:15:45,970 : INFO : started fold 3 900.642531
+2012-08-09 08:15:46,355 : INFO : 3 train auc 0.941760
+2012-08-09 08:15:50,937 : INFO : 3 test auc 0.812904
+2012-08-09 08:16:06,198 : INFO : limiting 13253 features to 800
+2012-08-09 08:19:15,219 : INFO : started fold 4 1109.891499
+2012-08-09 08:19:15,526 : INFO : 4 train auc 0.943317
+2012-08-09 08:19:20,570 : INFO : 4 test auc 0.798202
+2012-08-09 08:19:40,005 : INFO : limiting 15302 features to 800
+2012-08-09 08:23:55,608 : INFO : saved to submissions/submission2.csv
+2012-08-09 08:23:55,832 : INFO : terminated 2 lemmatizer processes
+2012-08-10 22:31:26,001 : INFO : limiting 13344 features to 800
+2012-08-10 22:34:38,237 : INFO : started fold 0 209.904644
+2012-08-10 22:34:38,537 : INFO : 0 train auc 0.936702
+2012-08-10 22:34:43,233 : INFO : 0 test auc 0.878922
+2012-08-10 22:34:59,257 : INFO : limiting 13383 features to 800
+2012-08-10 22:38:11,063 : INFO : started fold 1 422.731151
+2012-08-10 22:38:11,385 : INFO : 1 train auc 0.939035
+2012-08-10 22:38:16,253 : INFO : 1 test auc 0.801978
+2012-08-10 22:38:31,548 : INFO : limiting 13241 features to 800
+2012-08-10 22:41:43,486 : INFO : started fold 2 635.154075
+2012-08-10 22:41:43,867 : INFO : 2 train auc 0.941712
+2012-08-10 22:41:48,984 : INFO : 2 test auc 0.813584
+2012-08-10 22:42:05,116 : INFO : limiting 13487 features to 800
+2012-08-10 22:45:17,443 : INFO : started fold 3 849.111199
+2012-08-10 22:45:17,761 : INFO : 3 train auc 0.943382
+2012-08-10 22:45:22,301 : INFO : 3 test auc 0.812293
+2012-08-10 22:45:37,590 : INFO : limiting 13253 features to 800
+2012-08-10 22:48:45,458 : INFO : started fold 4 1057.125772
+2012-08-10 22:48:45,741 : INFO : 4 train auc 0.942602
+2012-08-10 22:48:50,751 : INFO : 4 test auc 0.801597
+2012-08-11 00:20:18,957 : INFO : limiting 15302 features to 800
+2012-08-11 10:06:43,261 : INFO : saved to submissions/submission4.csv
+2012-08-11 10:06:43,515 : INFO : terminated 2 lemmatizer processes
+2012-08-11 11:23:59,760 : INFO : limiting 10991 features to 1200
+2012-08-11 11:24:22,749 : INFO : terminated 2 lemmatizer processes
+2012-08-11 11:30:17,821 : INFO : limiting 10991 features to 1200
+2012-08-11 11:35:03,015 : INFO : started fold 0 301.630447
+2012-08-11 11:35:03,583 : INFO : terminated 2 lemmatizer processes
+2012-08-11 11:37:06,135 : INFO : limiting 10991 features to 1200
+2012-08-11 11:37:46,401 : INFO : started fold 0 57.058325
+2012-08-11 11:37:46,599 : INFO : terminated 2 lemmatizer processes
+2012-08-11 11:40:15,126 : INFO : limiting 10991 features to 1200
+2012-08-11 11:40:53,552 : INFO : started fold 0 54.883969
+2012-08-11 11:40:53,622 : INFO : 0 train auc 0.835747
+2012-08-11 11:40:58,866 : INFO : 0 test auc 0.838436
+2012-08-11 11:41:14,923 : INFO : limiting 10978 features to 1200
+2012-08-11 11:41:19,584 : INFO : terminated 2 lemmatizer processes
+2012-08-11 11:42:00,218 : INFO : limiting 10991 features to 1200
+2012-08-11 11:47:59,192 : INFO : started fold 0 375.478691
+2012-08-11 11:47:59,677 : INFO : 0 train auc 0.987703
+2012-08-11 11:48:05,003 : INFO : 0 test auc 0.875645
+2012-08-11 11:48:21,220 : INFO : limiting 10978 features to 1200
+2012-08-11 11:54:08,474 : INFO : started fold 1 744.761448
+2012-08-11 11:54:08,960 : INFO : 1 train auc 0.985794
+2012-08-11 11:54:14,564 : INFO : 1 test auc 0.824401
+2012-08-11 11:54:31,186 : INFO : limiting 10838 features to 1200
+2012-08-11 12:00:33,114 : INFO : started fold 2 1129.401291
+2012-08-11 12:00:33,641 : INFO : 2 train auc 0.986430
+2012-08-11 12:00:39,405 : INFO : 2 test auc 0.851430
+2012-08-11 12:00:56,434 : INFO : limiting 11080 features to 1200
+2012-08-11 12:06:35,768 : INFO : started fold 3 1492.055368
+2012-08-11 12:06:36,234 : INFO : 3 train auc 0.985482
+2012-08-11 12:06:41,316 : INFO : 3 test auc 0.845867
+2012-08-11 12:06:57,106 : INFO : limiting 10907 features to 1200
+2012-08-11 12:12:37,783 : INFO : started fold 4 1854.070158
+2012-08-11 12:12:38,341 : INFO : 4 train auc 0.988444
+2012-08-11 12:12:44,097 : INFO : 4 test auc 0.809360
+2012-08-11 12:17:13,001 : INFO : limiting 12509 features to 1200
+2012-08-11 12:24:52,764 : INFO : saved to submissions/submission6.csv
+2012-08-11 12:24:53,023 : INFO : terminated 2 lemmatizer processes
+2012-08-12 12:18:42,419 : INFO : limiting 60763 features to 2000
+2012-08-12 12:27:49,738 : INFO : started fold 0 564.067345
+2012-08-12 12:27:50,311 : INFO : 0 train auc 0.984825
+2012-08-12 12:27:56,658 : INFO : 0 test auc 0.872909
+2012-08-12 12:28:12,960 : INFO : limiting 60582 features to 2000
+2012-08-12 12:37:18,893 : INFO : started fold 1 1133.222251
+2012-08-12 12:37:19,466 : INFO : 1 train auc 0.984815
+2012-08-12 12:37:25,937 : INFO : 1 test auc 0.824770
+2012-08-12 12:37:42,262 : INFO : limiting 59957 features to 2000
+2012-08-12 13:36:57,073 : INFO : started fold 2 4711.402671
+2012-08-12 13:36:57,659 : INFO : 2 train auc 0.985198
+2012-08-12 13:37:04,249 : INFO : 2 test auc 0.852527
+2012-08-12 13:37:20,931 : INFO : limiting 61442 features to 2000
+2012-08-12 13:46:26,971 : INFO : started fold 3 5281.300833
+2012-08-12 13:46:27,550 : INFO : 3 train auc 0.985369
+2012-08-12 13:46:33,683 : INFO : 3 test auc 0.846355
+2012-08-12 15:07:30,837 : INFO : limiting 59271 features to 2000
+2012-08-12 15:16:43,887 : INFO : started fold 4 10698.216488
+2012-08-12 15:16:44,460 : INFO : 4 train auc 0.986428
+2012-08-12 15:16:51,196 : INFO : 4 test auc 0.817613
+2012-08-12 15:17:11,664 : INFO : limiting 72952 features to 2000
+2012-08-12 16:02:08,909 : INFO : saved to submissions/submission7.csv
+2012-08-12 16:02:09,250 : INFO : terminated 2 lemmatizer processes
+2012-08-12 16:25:31,974 : INFO : limiting 60763 features to 500
+2012-08-12 16:26:05,309 : INFO : started fold 0 50.527740
+2012-08-12 16:26:05,361 : INFO : 0 train auc 0.893613
+2012-08-12 16:28:45,730 : INFO : limiting 60763 features to 500
+2012-08-12 16:29:18,728 : INFO : started fold 0 49.651610
+2012-08-12 16:29:18,782 : INFO : 0 train auc 0.897122
+2012-08-12 16:29:23,260 : INFO : 0 test auc 0.856397
+2012-08-12 16:30:08,084 : INFO : limiting 60763 features to 500
+2012-08-12 16:30:43,792 : INFO : started fold 0 52.473768
+2012-08-12 16:30:43,857 : INFO : 0 train auc 0.901317
+2012-08-12 16:30:50,787 : INFO : 0 test auc 0.862272
+2012-08-12 16:31:09,999 : INFO : limiting 60582 features to 500
+2012-08-12 16:31:43,328 : INFO : started fold 1 112.010169
+2012-08-12 16:31:43,383 : INFO : 1 train auc 0.903961
+2012-08-12 16:31:48,944 : INFO : 1 test auc 0.784305
+2012-08-12 16:32:05,912 : INFO : limiting 59957 features to 500
+2012-08-12 16:32:43,974 : INFO : started fold 2 172.655780
+2012-08-12 16:32:44,039 : INFO : 2 train auc 0.902248
+2012-08-12 16:32:49,444 : INFO : 2 test auc 0.831707
+2012-08-12 16:33:08,579 : INFO : limiting 61442 features to 500
+2012-08-12 16:33:48,027 : INFO : started fold 3 236.708857
+2012-08-12 16:33:48,112 : INFO : 3 train auc 0.904606
+2012-08-12 16:33:52,718 : INFO : 3 test auc 0.826407
+2012-08-12 16:34:10,099 : INFO : limiting 59271 features to 500
+2012-08-12 16:34:45,207 : INFO : started fold 4 293.889407
+2012-08-12 16:34:45,261 : INFO : 4 train auc 0.911379
+2012-08-12 16:34:50,225 : INFO : 4 test auc 0.803530
+2012-08-12 16:35:11,554 : INFO : limiting 72952 features to 500
+2012-08-12 16:36:13,402 : INFO : saved to submissions/submission8.csv
+2012-08-12 16:40:18,945 : INFO : limiting 60763 features to 500
+2012-08-12 16:40:52,914 : INFO : started fold 0 50.745098
+2012-08-12 16:40:52,985 : INFO : 0 train auc 0.903639
+2012-08-12 16:40:57,679 : INFO : 0 test auc 0.858435
+2012-08-12 16:41:18,838 : INFO : limiting 60582 features to 500
+2012-08-12 16:41:52,715 : INFO : started fold 1 110.546288
+2012-08-12 16:41:52,784 : INFO : 1 train auc 0.908818
+2012-08-12 16:41:57,744 : INFO : 1 test auc 0.795798
+2012-08-12 16:42:18,673 : INFO : limiting 59957 features to 500
+2012-08-12 16:42:52,101 : INFO : started fold 2 169.932558
+2012-08-12 16:42:52,156 : INFO : 2 train auc 0.905052
+2012-08-12 16:42:56,989 : INFO : 2 test auc 0.832653
+2012-08-12 16:43:19,907 : INFO : limiting 61442 features to 500
+2012-08-12 16:43:53,543 : INFO : started fold 3 231.374085
+2012-08-12 16:43:53,596 : INFO : 3 train auc 0.908599
+2012-08-12 16:43:57,971 : INFO : 3 test auc 0.817943
+2012-08-12 16:44:18,594 : INFO : limiting 59271 features to 500
+2012-08-12 16:44:51,191 : INFO : started fold 4 289.022303
+2012-08-12 16:44:51,252 : INFO : 4 train auc 0.915027
+2012-08-12 16:44:56,205 : INFO : 4 test auc 0.793692
+2012-08-12 16:45:21,486 : INFO : limiting 72952 features to 500
+2012-08-12 16:46:19,097 : INFO : saved to submissions/submission9.csv
+2012-08-12 16:49:42,907 : INFO : limiting 60763 features to 500
+2012-08-12 16:50:30,716 : INFO : started fold 0 64.604703
+2012-08-12 16:50:30,790 : INFO : 0 train auc 0.864763
+2012-08-12 16:50:35,366 : INFO : 0 test auc 0.855443
+2012-08-12 16:51:00,435 : INFO : limiting 60582 features to 500
+2012-08-12 16:51:48,364 : INFO : started fold 1 142.252930
+2012-08-12 16:51:48,431 : INFO : 1 train auc 0.870912
+2012-08-12 16:51:53,262 : INFO : 1 test auc 0.786450
+2012-08-12 16:52:18,940 : INFO : limiting 59957 features to 500
+2012-08-12 16:53:06,364 : INFO : started fold 2 220.253415
+2012-08-12 16:53:06,488 : INFO : 2 train auc 0.869860
+2012-08-12 16:53:12,710 : INFO : 2 test auc 0.819350
+2012-08-12 16:53:40,501 : INFO : limiting 61442 features to 500
+2012-08-12 16:54:29,837 : INFO : started fold 3 303.726187
+2012-08-12 16:54:29,909 : INFO : 3 train auc 0.867663
+2012-08-12 16:54:34,328 : INFO : 3 test auc 0.821529
+2012-08-12 16:55:00,086 : INFO : limiting 59271 features to 500
+2012-08-12 16:55:50,726 : INFO : started fold 4 384.615207
+2012-08-12 16:55:50,799 : INFO : 4 train auc 0.876436
+2012-08-12 16:55:55,850 : INFO : 4 test auc 0.786068
+2012-08-12 16:56:26,631 : INFO : limiting 72952 features to 500
+2012-08-12 16:57:42,741 : INFO : saved to submissions/submission10.csv
+2012-08-12 17:01:15,344 : INFO : limiting 60763 features to 500
+2012-08-12 17:02:30,953 : INFO : started fold 0 92.408682
+2012-08-12 17:02:31,083 : INFO : 0 train auc 0.943440
+2012-08-12 17:02:35,644 : INFO : 0 test auc 0.870491
+2012-08-12 17:03:10,972 : INFO : limiting 60582 features to 500
+2012-08-12 17:04:29,522 : INFO : started fold 1 210.978006
+2012-08-12 17:04:29,638 : INFO : 1 train auc 0.948287
+2012-08-12 17:04:35,221 : INFO : 1 test auc 0.807014
+2012-08-12 17:05:11,160 : INFO : limiting 59957 features to 500
+2012-08-12 17:06:30,089 : INFO : started fold 2 331.545007
+2012-08-12 17:06:30,214 : INFO : 2 train auc 0.949523
+2012-08-12 17:06:35,414 : INFO : 2 test auc 0.838257
+2012-08-12 17:07:12,662 : INFO : limiting 61442 features to 500
+2012-08-12 17:08:30,069 : INFO : started fold 3 451.524538
+2012-08-12 17:08:30,172 : INFO : 3 train auc 0.948796
+2012-08-12 17:08:34,603 : INFO : 3 test auc 0.832203
+2012-08-12 17:09:11,404 : INFO : limiting 59271 features to 500
+2012-08-12 17:10:27,453 : INFO : started fold 4 568.908870
+2012-08-12 17:10:27,569 : INFO : 4 train auc 0.953011
+2012-08-12 17:10:32,574 : INFO : 4 test auc 0.803322
+2012-08-12 17:12:45,374 : INFO : limiting 60763 features to 500
+2012-08-12 17:16:09,978 : INFO : limiting 60763 features to 500
+2012-08-12 17:17:25,510 : INFO : started fold 0 92.249731
+2012-08-12 17:17:25,631 : INFO : 0 train auc 0.948208
+2012-08-12 17:17:30,196 : INFO : 0 test auc 0.862385
+2012-08-12 17:18:05,703 : INFO : limiting 60582 features to 500
+2012-08-12 17:19:22,268 : INFO : started fold 1 209.008035
+2012-08-12 17:19:22,376 : INFO : 1 train auc 0.945192
+2012-08-12 17:19:27,150 : INFO : 1 test auc 0.797922
+2012-08-12 17:20:02,954 : INFO : limiting 59957 features to 500
+2012-08-12 17:21:19,370 : INFO : started fold 2 326.109689
+2012-08-12 17:21:19,493 : INFO : 2 train auc 0.951209
+2012-08-12 17:21:24,397 : INFO : 2 test auc 0.842889
+2012-08-12 17:22:00,396 : INFO : limiting 61442 features to 500
+2012-08-12 17:23:20,705 : INFO : started fold 3 447.444962
+2012-08-12 17:23:20,807 : INFO : 3 train auc 0.951208
+2012-08-12 17:23:25,196 : INFO : 3 test auc 0.840146
+2012-08-12 17:24:00,474 : INFO : limiting 59271 features to 500
+2012-08-12 17:25:15,502 : INFO : started fold 4 562.241830
+2012-08-12 17:25:15,617 : INFO : 4 train auc 0.954061
+2012-08-12 17:25:20,659 : INFO : 4 test auc 0.802218
+2012-08-12 17:26:00,331 : INFO : limiting 72952 features to 500
+2012-08-12 17:27:55,166 : INFO : saved to submissions/submission11.csv
+2012-08-12 17:35:50,314 : INFO : limiting 60763 features to 5000
+2012-08-12 17:44:59,797 : INFO : started fold 0 566.145062
+2012-08-12 17:45:00,202 : INFO : 0 train auc 0.926913
+2012-08-12 17:45:11,023 : INFO : 0 test auc 0.870021
+2012-08-12 17:45:47,165 : INFO : limiting 60582 features to 5000
+2012-08-12 17:53:06,254 : INFO : limiting 155870 features to 5000
+2012-08-12 18:03:46,390 : INFO : started fold 0 657.227415
+2012-08-12 18:03:46,772 : INFO : 0 train auc 0.936763
+2012-08-12 18:03:57,129 : INFO : 0 test auc 0.894781
+2012-08-12 18:04:32,818 : INFO : limiting 155562 features to 5000
+2012-08-12 18:14:55,571 : INFO : started fold 1 1326.408069
+2012-08-12 18:14:55,971 : INFO : 1 train auc 0.939800
+2012-08-12 18:15:07,957 : INFO : 1 test auc 0.877702
+2012-08-12 18:15:45,067 : INFO : limiting 154198 features to 5000
+2012-08-12 18:26:01,762 : INFO : started fold 2 1992.599039
+2012-08-12 18:26:02,154 : INFO : 2 train auc 0.940173
+2012-08-12 18:26:12,892 : INFO : 2 test auc 0.866636
+2012-08-12 18:26:49,283 : INFO : limiting 157722 features to 5000
+2012-08-12 18:37:09,402 : INFO : started fold 3 2660.238973
+2012-08-12 18:37:09,795 : INFO : 3 train auc 0.937719
+2012-08-12 18:37:20,312 : INFO : 3 test auc 0.877904
+2012-08-12 18:37:57,923 : INFO : limiting 154853 features to 5000
+2012-08-12 18:48:13,541 : INFO : started fold 4 3324.377875
+2012-08-12 18:48:13,959 : INFO : 4 train auc 0.940377
+2012-08-12 18:48:25,224 : INFO : 4 test auc 0.852312
+2012-08-12 18:49:06,107 : INFO : limiting 179043 features to 5000
+2012-08-12 19:02:30,219 : INFO : saved to submissions/submission12.csv
+2012-08-12 19:09:09,521 : INFO : limiting 784376 features to 5000
+2012-08-12 19:20:02,740 : INFO : started fold 0 674.149798
+2012-08-12 19:20:03,137 : INFO : 0 train auc 0.946966
+2012-08-12 19:20:14,204 : INFO : 0 test auc 0.894255
+2012-08-12 19:20:53,827 : INFO : limiting 782690 features to 5000
+2012-08-12 20:11:19,365 : INFO : limiting 784376 features to 1500
+2012-08-12 20:17:13,371 : INFO : started fold 0 375.056195
+2012-08-12 20:17:13,747 : INFO : 0 train auc 0.958189
+2012-08-12 20:17:20,191 : INFO : 0 test auc 0.861970
+2012-08-12 20:18:15,408 : INFO : limiting 782690 features to 1500
+2012-08-12 20:24:05,481 : INFO : started fold 1 787.165745
+2012-08-12 20:24:05,862 : INFO : 1 train auc 0.960007
+2012-08-12 20:24:12,505 : INFO : 1 test auc 0.852426
+2012-08-12 20:25:07,212 : INFO : limiting 775678 features to 1500
+2012-08-12 20:30:56,393 : INFO : started fold 2 1198.077736
+2012-08-12 20:30:56,819 : INFO : 2 train auc 0.960874
+2012-08-12 20:40:17,003 : INFO : 2 test auc 0.846770
+2012-08-12 20:41:14,353 : INFO : limiting 793644 features to 1500
+2012-08-12 20:48:01,105 : INFO : limiting 544685 features to 50
+2012-08-12 20:49:45,767 : INFO : limiting 544685 features to 50
+2012-08-12 20:51:09,240 : INFO : limiting 544685 features to 50
+2012-08-12 20:51:37,707 : INFO : started fold 0 46.717253
+2012-08-12 20:51:37,793 : INFO : 0 train auc 0.814082
+2012-08-12 20:51:42,018 : INFO : 0 test auc 0.725900
+2012-08-12 20:52:34,230 : INFO : limiting 543087 features to 50
+2012-08-12 20:53:02,554 : INFO : started fold 1 131.564572
+2012-08-12 20:53:02,641 : INFO : 1 train auc 0.818397
+2012-08-12 20:53:07,076 : INFO : 1 test auc 0.715716
+2012-08-12 20:53:57,665 : INFO : limiting 538567 features to 50
+2012-08-12 20:54:26,102 : INFO : started fold 2 215.112658
+2012-08-12 20:54:26,188 : INFO : 2 train auc 0.819439
+2012-08-12 20:54:30,717 : INFO : 2 test auc 0.727521
+2012-08-12 20:55:21,620 : INFO : limiting 551136 features to 50
+2012-08-12 20:55:50,251 : INFO : started fold 3 299.261149
+2012-08-12 20:55:50,339 : INFO : 3 train auc 0.819647
+2012-08-12 20:55:54,435 : INFO : 3 test auc 0.695599
+2012-08-12 20:56:44,687 : INFO : limiting 535026 features to 50
+2012-08-12 20:57:12,740 : INFO : started fold 4 381.750577
+2012-08-12 20:57:12,827 : INFO : 4 train auc 0.814958
+2012-08-12 20:57:17,472 : INFO : 4 test auc 0.712118
+2012-08-12 20:58:15,962 : INFO : limiting 639851 features to 50
+2012-08-12 20:59:07,085 : INFO : saved to submissions/submission13.csv
+2012-08-12 20:59:47,111 : INFO : limiting 544685 features to 50
+2012-08-12 21:00:15,892 : INFO : started fold 0 47.118025
+2012-08-12 21:00:15,978 : INFO : 0 train auc 0.814082
+2012-08-12 21:00:20,265 : INFO : 0 test auc 0.725900
+2012-08-12 21:01:06,135 : INFO : limiting 544685 features to 50 most informative
+2012-08-12 21:09:34,476 : INFO : limiting 10962 features to 50 most informative
+2012-08-12 21:18:11,474 : INFO : limiting 10962 features to 50 most informative
+2012-08-12 21:22:19,022 : INFO : terminated 2 lemmatizer processes
+2012-08-12 21:23:40,940 : INFO : limiting 10962 features to 50 most informative
+2012-08-12 21:25:24,293 : INFO : started fold 0 119.694553
+2012-08-12 21:25:24,399 : INFO : 0 train auc 0.834105
+2012-08-12 21:25:28,273 : INFO : 0 test auc 0.835185
+2012-08-12 21:26:09,648 : INFO : limiting 10949 features to 50 most informative
+2012-08-12 21:27:54,523 : INFO : started fold 1 269.924270
+2012-08-12 21:27:54,608 : INFO : 1 train auc 0.850723
+2012-08-12 21:27:58,632 : INFO : 1 test auc 0.795756
+2012-08-12 21:29:02,209 : INFO : limiting 10962 features to 1000 most informative
+2012-08-12 21:33:13,085 : INFO : started fold 0 266.902283
+2012-08-12 21:33:13,382 : INFO : 0 train auc 0.920536
+2012-08-12 21:33:18,407 : INFO : 0 test auc 0.877424
+2012-08-12 21:34:04,834 : INFO : limiting 10949 features to 1000 most informative
+2012-08-12 21:38:13,451 : INFO : started fold 1 567.268219
+2012-08-12 21:38:13,754 : INFO : 1 train auc 0.926098
+2012-08-12 21:38:18,984 : INFO : 1 test auc 0.823073
+2012-08-12 21:39:05,107 : INFO : limiting 10810 features to 1000 most informative
+2012-08-12 22:22:58,232 : INFO : started fold 2 3252.049075
+2012-08-12 22:22:58,529 : INFO : 2 train auc 0.924841
+2012-08-12 22:23:03,831 : INFO : 2 test auc 0.840098
+2012-08-12 22:23:50,049 : INFO : limiting 11051 features to 1000 most informative
+2012-08-12 22:28:00,030 : INFO : started fold 3 3553.848062
+2012-08-12 22:28:00,323 : INFO : 3 train auc 0.926280
+2012-08-12 22:28:05,247 : INFO : 3 test auc 0.852589
+2012-08-12 22:28:50,349 : INFO : limiting 10878 features to 1000 most informative
+2012-08-12 22:32:58,454 : INFO : started fold 4 3852.271317
+2012-08-12 22:32:58,740 : INFO : 4 train auc 0.929832
+2012-08-12 22:33:04,106 : INFO : 4 test auc 0.806995
+2012-08-12 22:33:54,619 : INFO : limiting 12480 features to 1000 most informative
+2012-08-12 23:17:11,532 : INFO : saved to submissions/submission14.csv
+2012-08-12 23:22:30,773 : INFO : limiting 760003 features to 5000 most informative
+2012-08-13 02:02:35,914 : INFO : limiting 226280 features to 5000 most informative
+2012-08-13 02:06:24,165 : INFO : limiting 226280 features to 500 most informative
+2012-08-13 02:37:24,236 : INFO : fold 0 started
+2012-08-13 02:37:40,931 : INFO : limiting 10962 features to 500 most informative
+2012-08-13 02:39:28,024 : INFO : started fold 0 123.790207
+2012-08-13 02:39:28,071 : INFO : 0 train auc 0.730672
+2012-08-13 02:39:32,456 : INFO : 0 test auc 0.758966
+2012-08-13 02:39:32,488 : INFO : importances
+     importance       name
+142    0.000000        few
+141    0.000000       feel
+140    0.000000       fece
+139    0.000000    feature
+138    0.000000        fat
+137    0.000000        far
+154    0.000000    foreign
+221    0.000000    jackass
+224    0.000000      karma
+160    0.000000     fucker
+163    0.000000        fuk
+218    0.000000      islam
+161    0.000000     fuckin
+156    0.000000    freakin
+157    0.000000       from
+158    0.000000         fu
+220    0.000000       jack
+6      0.000000       also
+253    0.000000        lot
+136    0.000000        fan
+38     0.000000       blow
+29     0.000000      begin
+247    0.000025       long
+135    0.000032      false
+497    0.000036        yet
+244    0.000043     little
+219    0.000047      issue
+381    0.000052       seem
+352    0.000057         re
+93     0.000058    deserve
+175    0.000061      great
+125    0.000066    example
+130    0.000071       face
+496    0.000073       year
+56     0.000075         ck
+107    0.000076      doesn
+258    0.000091   majority
+294    0.000091      nigga
+477    0.000097        war
+301    0.000104  obviously
+108    0.000105       dont
+481    0.000117        way
+422    0.000126      state
+155    0.000128      freak
+420    0.000132      start
+248    0.000137       look
+162    0.000147    fucking
+87     0.000152        day
+21     0.000156       back
+391    0.000157       sick
+177    0.000183        guy
+368    0.000189      right
+473    0.000197       vote
+494    0.000226         xc
+323    0.000227       play
+62     0.000229        com
+63     0.000230    comment
+273    0.000257       more
+449    0.000262      think
+35     0.000327        bit
+306    0.000332       over
+120    0.000349        end
+276    0.000373     mother
+67     0.000431   congress
+448    0.000460      thing
+470    0.000465       very
+170    0.000469       good
+380    0.000481        see
+304    0.000514       only
+9      0.000536   american
+321    0.000543      plain
+37     0.000575      black
+447    0.000580       that
+106    0.000584         do
+480    0.000683      watch
+217    0.000705         is
+483    0.000714       well
+305    0.000736      other
+254    0.000890       love
+296    0.000956        not
+187    0.001275       here
+183    0.001432       have
+300    0.001989      obama
+452    0.002546       time
+149    0.002816      first
+34     0.003242     better
+279    0.004615      mouth
+152    0.005657       fool
+159    0.006650       fuck
+95     0.009116       dick
+350    0.014389     racist
+14     0.018961        ass
+206    0.028589   ignorant
+251    0.033920      loser
+390    0.044020       shut
+427    0.047566     stupid
+113    0.084680       dumb
+274    0.124955      moron
+36     0.142727      bitch
+203    0.404642      idiot
+2012-08-13 02:39:34,032 : INFO : fold 0 done
+2012-08-13 02:39:34,032 : INFO : fold 1 started
+2012-08-13 02:39:49,680 : INFO : limiting 10949 features to 500 most informative
+2012-08-13 02:44:16,973 : INFO : fold 0 started
+2012-08-13 02:44:32,758 : INFO : limiting 10962 features to 2000 most informative
+2012-08-13 02:50:02,726 : INFO : started fold 0 345.753617
+2012-08-13 02:50:03,051 : INFO : 0 train auc 0.866361
+2012-08-13 02:50:10,038 : INFO : 0 test auc 0.868221
+2012-08-13 02:50:10,082 : INFO : importances
+      importance          name
+1579    0.001006           see
+1785    0.001015          that
+123     0.001039      basement
+295     0.001057       comment
+1019    0.001076          look
+788     0.001116          here
+1922    0.001160           war
+886     0.001166   intelligent
+149     0.001185           bet
+1028    0.001191          love
+1852    0.001222          ugly
+1360    0.001237         plain
+546     0.001253          ever
+715     0.001304          good
+1615    0.001393          sick
+964     0.001509          lame
+666     0.001554        fuckin
+1933    0.001575          well
+185     0.001580         brain
+611     0.001657         first
+908     0.001671       jackass
+111     0.001676           bag
+1140    0.001769          name
+142     0.001837       believe
+528     0.001972       english
+566     0.002042          face
+658     0.002055            fu
+1117    0.002057  motherfucker
+1519    0.002166         right
+459     0.002228            do
+709     0.002285            go
+688     0.002310          game
+1921    0.002351          want
+1845    0.002360          twat
+1283    0.002403         other
+1807    0.002414          time
+448     0.002499    disgusting
+324     0.002503          cook
+412     0.002546    despicable
+1571    0.002658          scum
+517     0.002677       elitist
+954     0.002781         knock
+1044    0.002849        maggot
+1949    0.003090         whore
+1669    0.003284         sound
+808     0.003292          hole
+923     0.003349          jerk
+1247    0.003368          nyou
+445     0.003561         dirty
+1793    0.003580         think
+572     0.003750          fake
+1973    0.003759            xc
+1147    0.003898          nazi
+454     0.003902       disturb
+1347    0.004266         piece
+990     0.004315       libturd
+349     0.004319         crawl
+1605    0.004336          shit
+843     0.004342       idiotic
+1842    0.004421          turd
+603     0.004533        filthy
+1723    0.004567     stupidity
+663     0.004990        fucker
+151     0.005072        better
+140     0.005087         being
+281     0.005200          cock
+1008    0.005783        little
+1875    0.005963            ur
+1218    0.006367           not
+165     0.006764         black
+1251    0.007714         obama
+1470    0.009170            re
+1112    0.009595       moronic
+340     0.010027        coward
+102     0.010497           azz
+1792    0.010847         thing
+773     0.011663          have
+1443    0.011977         pussy
+1306    0.012994      pathetic
+995     0.013118          life
+1100    0.014044           mom
+660     0.015070          fuck
+1509    0.017241      retarded
+80      0.017460           ass
+87      0.017997       asshole
+634     0.022237          fool
+1119    0.022816         mouth
+425     0.022968          dick
+569     0.023364        faggot
+1614    0.023875          shut
+1832    0.025981         troll
+1507    0.028658        retard
+847     0.028908      ignorant
+1455    0.031412        racist
+1721    0.040626        stupid
+1024    0.044175         loser
+163     0.050377         bitch
+485     0.051808          dumb
+1111    0.054672         moron
+842     0.089910         idiot
+2012-08-13 02:50:30,759 : INFO : fold 0 done
+2012-08-13 02:50:30,759 : INFO : fold 1 started
+2012-08-13 02:50:46,626 : INFO : limiting 10949 features to 2000 most informative
+2012-08-13 02:56:13,172 : INFO : started fold 1 716.199655
+2012-08-13 02:56:13,417 : INFO : 1 train auc 0.873364
+2012-08-13 02:56:20,001 : INFO : 1 test auc 0.800918
+2012-08-13 02:56:20,046 : INFO : importances
+      importance         name
+1913    0.000976          war
+1252    0.001005         nwhy
+199     0.001017       breath
+69      0.001020       anyone
+636     0.001029         flag
+397     0.001042          dad
+587     0.001141         face
+1049    0.001164          man
+299     0.001165      clearly
+458     0.001178     dickhead
+1728    0.001193    stupidity
+882     0.001195  intelligent
+107     0.001198          azz
+151     0.001210       better
+1979    0.001228         year
+1590    0.001228          see
+373     0.001240      cracker
+444     0.001264   despicable
+1782    0.001266         that
+1803    0.001272         time
+149     0.001279          bet
+1185    0.001290        nigga
+1277    0.001301         only
+1937    0.001304        whiny
+725     0.001378         good
+1133    0.001400         name
+1112    0.001439       mother
+1085    0.001472    miserable
+1919    0.001485          way
+1972    0.001623           xc
+1476    0.001674       rapist
+1107    0.001849         more
+1020    0.001856         look
+1014    0.001971           ll
+1292    0.001997        other
+383     0.002019     creature
+1926    0.002037         well
+914     0.002089         jerk
+1912    0.002094         want
+1259    0.002171        obama
+482     0.002181   disgusting
+1338    0.002221       person
+195     0.002242        brain
+896     0.002270           is
+1109    0.002475      moronic
+686     0.002570      fucking
+1788    0.002583        think
+1029    0.002592         love
+992     0.002673      libturd
+1011    0.002745       little
+1466    0.002747         quit
+991     0.002959      libtard
+997     0.003250         life
+835     0.003440          idi
+1045    0.003449       maggot
+1897    0.003767         vile
+624     0.003804       filthy
+594     0.004121         fake
+1787    0.004194        thing
+1677    0.004784        sound
+1352    0.005236        piece
+685     0.005426       fuckin
+1139    0.005659         nazi
+1530    0.006116        right
+170     0.006243        black
+306     0.006907         cock
+1616    0.007244         shit
+381     0.007643        crawl
+115     0.007839          bag
+369     0.007990       coward
+86      0.008654          ass
+1763    0.008977         tard
+1254    0.009018         nyou
+492     0.009236           do
+1522    0.010870     retarded
+1214    0.011449          not
+1317    0.013157     pathetic
+391     0.013343         cunt
+1118    0.013652        mouth
+1626    0.013886         sick
+92      0.015224      asshole
+842     0.016947     ignorant
+1456    0.017110        pussy
+1482    0.018883           re
+1830    0.019402        troll
+1096    0.019515          mom
+679     0.021484         fuck
+653     0.024752         fool
+592     0.025405       faggot
+457     0.026015         dick
+773     0.028252         have
+1520    0.030105       retard
+1469    0.030776       racist
+1625    0.033052         shut
+1025    0.041736        loser
+1725    0.050603       stupid
+517     0.053882         dumb
+165     0.059389        bitch
+1108    0.059650        moron
+836     0.066318        idiot
+2012-08-13 02:56:40,795 : INFO : fold 1 done
+2012-08-13 02:56:40,795 : INFO : fold 2 started
+2012-08-13 02:56:57,650 : INFO : limiting 10810 features to 2000 most informative
+2012-08-13 03:02:11,419 : INFO : started fold 2 1074.446323
+2012-08-13 03:02:11,641 : INFO : 2 train auc 0.873470
+2012-08-13 03:02:18,265 : INFO : 2 test auc 0.810175
+2012-08-13 03:02:18,310 : INFO : importances
+      importance        name
+139     0.000885      become
+773     0.000921         guy
+1938    0.000927       white
+605     0.000957         fan
+315     0.000993         com
+1131    0.001013      mother
+1291    0.001072        only
+1912    0.001090        want
+1206    0.001126       nigga
+745     0.001141        good
+208     0.001175      breath
+1303    0.001262       other
+1040    0.001271        love
+1671    0.001332       sound
+1739    0.001335     swallow
+592     0.001368        face
+1612    0.001423        shit
+853     0.001440       human
+1616    0.001476       shove
+503     0.001483      douche
+559     0.001515     english
+384     0.001558    creature
+475     0.001579  disgusting
+1845    0.001646        ugly
+1970    0.001687          xc
+1980    0.001735        year
+1965    0.001739         wtf
+149     0.001871     believe
+1034    0.001874        look
+455     0.001877        didn
+441     0.001879  despicable
+1783    0.001906       think
+1022    0.001981      little
+374     0.001996     cracker
+925     0.001999          is
+699     0.002095      fuckin
+1634    0.002099      sister
+1919    0.002129         way
+1833    0.002139        turd
+1794    0.002190        time
+1864    0.002198          ur
+1262    0.002288        nwhy
+308     0.002475        cock
+546     0.002554     elitist
+175     0.002570       black
+1774    0.002574        that
+1012    0.002576        life
+471     0.002596       dirty
+204     0.002662       brain
+1656    0.002984        smug
+1163    0.003091        nazi
+157     0.003243      better
+1891    0.003255        vile
+638     0.003339      filthy
+970     0.003705       knock
+490     0.004214          do
+91      0.004331     asshole
+871     0.004524     idiotic
+1350    0.004585      person
+1527    0.004670       right
+697     0.005468      fucker
+453     0.005569    dickhead
+1009    0.005658     libturd
+107     0.005731         azz
+1134    0.005750       mouth
+382     0.005815       crawl
+1447    0.006208       pussy
+1231    0.006224         not
+1752    0.006807        tard
+1836    0.006959        twat
+394     0.007290        cunt
+1272    0.007339       obama
+1129    0.008487     moronic
+117     0.009414         bag
+1362    0.009666       piece
+802     0.010047        have
+1621    0.010770        sick
+1330    0.011003    pathetic
+599     0.011215        fake
+86      0.013827         ass
+1117    0.013850         mom
+1471    0.014310          re
+1265    0.017218        nyou
+370     0.017818      coward
+874     0.018780    ignorant
+1459    0.019751      racist
+595     0.023061      faggot
+667     0.023179        fool
+452     0.024288        dick
+1514    0.027363    retarded
+1822    0.030286       troll
+694     0.031535        fuck
+1620    0.036289        shut
+1513    0.042748      retard
+170     0.046759       bitch
+1037    0.048128       loser
+1719    0.050887      stupid
+514     0.051991        dumb
+1128    0.053365       moron
+870     0.086003       idiot
+2012-08-13 03:02:37,197 : INFO : fold 2 done
+2012-08-13 03:02:37,198 : INFO : fold 3 started
+2012-08-13 03:02:53,392 : INFO : limiting 11051 features to 2000 most informative
+2012-08-13 03:08:15,324 : INFO : started fold 3 1438.351711
+2012-08-13 03:08:15,573 : INFO : 3 train auc 0.870730
+2012-08-13 03:08:21,739 : INFO : 3 test auc 0.823329
+2012-08-13 03:08:21,783 : INFO : importances
+      importance         name
+573     0.000757      example
+682     0.000761       fuckin
+290     0.000775      clearly
+50      0.000833     american
+1020    0.000834         life
+307     0.000839          com
+1288    0.000875    obviously
+485     0.000878         dont
+548     0.000900      english
+1048    0.000943         love
+1742    0.000956         suck
+1685    0.000975        sound
+626     0.000979        first
+1039    0.001019         look
+1935    0.001024         well
+1494    0.001043       really
+902     0.001046  intelligent
+154     0.001110      believe
+411     0.001125       deeply
+1985    0.001137         year
+1125    0.001162         more
+732     0.001169         good
+1068    0.001208          man
+1587    0.001247       screen
+1418    0.001250         post
+1943    0.001295        whiny
+921     0.001296      jackass
+1374    0.001363        piece
+728     0.001379           go
+284     0.001434           ck
+447     0.001535     dickhead
+1210    0.001658        nigga
+1032    0.001753       little
+1538    0.001754        right
+308     0.001875         come
+202     0.001906        brain
+858     0.002007    ignorance
+1880    0.002114           ur
+1159    0.002117         name
+986     0.002161         lame
+1802    0.002210        think
+1281    0.002216        obama
+1677    0.002222           so
+1792    0.002487         that
+1313    0.002600        other
+351     0.002891         cook
+1801    0.003110        thing
+1627    0.003140         shit
+1976    0.003153           xc
+326     0.003201     complete
+1599    0.003285          see
+1063    0.003351       maggot
+821     0.003539         hole
+1358    0.003844       person
+854     0.005099      idiotic
+1170    0.005310         nazi
+1629    0.005352        shove
+387     0.005358          dad
+1647    0.005591       sister
+141     0.005972           be
+852     0.006442          idi
+384     0.006511         cunt
+121     0.006837          bag
+679     0.006858       fucker
+1771    0.007012         tard
+464     0.007103        dirty
+1131    0.007661       mother
+177     0.008302        black
+480     0.008308           do
+1015    0.008505      libturd
+1275    0.008818         nyou
+114     0.009216          azz
+89      0.010682          ass
+1236    0.011518          not
+1116    0.011912          mom
+1633    0.012128         sick
+1127    0.012691      moronic
+1526    0.014164     retarded
+1839    0.014374        troll
+95      0.014417      asshole
+1489    0.014887           re
+367     0.014912       coward
+1341    0.015246     pathetic
+1137    0.016388        mouth
+675     0.017440         fuck
+786     0.017618         have
+1468    0.018293        pussy
+446     0.019511         dick
+586     0.021289       faggot
+646     0.023903         fool
+1475    0.024497       racist
+859     0.027730     ignorant
+1524    0.030124       retard
+1632    0.030411         shut
+1044    0.049663        loser
+506     0.052021         dumb
+1734    0.052911       stupid
+172     0.054673        bitch
+1126    0.062705        moron
+853     0.077162        idiot
+2012-08-13 03:08:40,402 : INFO : fold 3 done
+2012-08-13 03:08:40,402 : INFO : fold 4 started
+2012-08-13 03:08:55,947 : INFO : limiting 10878 features to 2000 most informative
+2012-08-13 03:14:15,041 : INFO : started fold 4 1798.068095
+2012-08-13 03:14:15,268 : INFO : 4 train auc 0.877469
+2012-08-13 03:14:21,969 : INFO : 4 test auc 0.785892
+2012-08-13 03:14:22,014 : INFO : importances
+      importance          name
+1946    0.000745         whore
+1019    0.000752        little
+790     0.000756          hate
+158     0.000794          best
+51      0.000796      american
+1947    0.000813           win
+1104    0.000820         money
+1264    0.000896            of
+696     0.000922       fucking
+159     0.000943           bet
+58      0.000947       android
+88      0.000948           ask
+1789    0.000983          time
+1358    0.000995          pity
+345     0.001012      complete
+584     0.001053       example
+735     0.001065          give
+1108    0.001110          more
+1598    0.001123         shove
+1190    0.001155         nigga
+148     0.001170         being
+1114    0.001179  motherfucker
+601     0.001216           fag
+319     0.001245          cock
+606     0.001253          fake
+328     0.001366          come
+1726    0.001378       swallow
+846     0.001459         human
+1931    0.001474          well
+966     0.001529         knock
+1008    0.001686          life
+1415    0.001688        psycho
+736     0.001811            go
+245     0.001820          call
+974     0.001864          lame
+1035    0.001874          love
+1974    0.001980            xc
+1286    0.002075         other
+161     0.002080        better
+1502    0.002116         right
+1901    0.002372          vile
+1593    0.002397          shit
+1565    0.002518           see
+1773    0.002574         thing
+861     0.002788     ignorance
+1742    0.002893          tard
+384     0.003208       cracker
+858     0.003386       idiotic
+121     0.003410           bag
+479     0.003452    disgusting
+648     0.003656          flag
+1255    0.003750         obama
+1002    0.003899       libturd
+203     0.004305         brain
+406     0.004321           dad
+1702    0.004384     stupidity
+1330    0.004473        person
+1633    0.004542          smug
+489     0.004921            do
+475     0.005105         dirty
+1110    0.005230       moronic
+1144    0.005337          nazi
+692     0.005600        fucker
+1344    0.005742         piece
+392     0.005996         crawl
+1837    0.006253          turd
+1602    0.006492          sick
+1841    0.006600          twat
+139     0.006912            be
+1645    0.008307         sound
+827     0.008521          hole
+112     0.008601           azz
+1117    0.009135         mouth
+383     0.009448        coward
+401     0.010137          cunt
+1215    0.010975           not
+1249    0.011418          nyou
+1305    0.011607      pathetic
+1452    0.012465            re
+457     0.013416          dick
+1099    0.015994           mom
+90      0.017413           ass
+95      0.017768       asshole
+1428    0.017779         pussy
+794     0.018133          have
+603     0.018203        faggot
+689     0.022297          fuck
+660     0.022735          fool
+1491    0.023129      retarded
+1439    0.026753        racist
+1601    0.028674          shut
+862     0.030204      ignorant
+1821    0.032894         troll
+1489    0.035789        retard
+1031    0.043955         loser
+1700    0.045977        stupid
+517     0.048736          dumb
+1109    0.058224         moron
+170     0.059144         bitch
+857     0.083729         idiot
+2012-08-13 03:14:41,093 : INFO : fold 4 done
+2012-08-13 03:15:02,004 : INFO : limiting 12480 features to 2000 most informative
+2012-08-13 03:17:22,708 : INFO : fold 0 started
+2012-08-13 03:20:43,158 : INFO : fold 0 started
+2012-08-13 03:21:01,042 : INFO : limiting 39848 features to 2000 most informative
+2012-08-13 03:36:41,951 : INFO : fold 0 started
+2012-08-13 03:37:00,348 : INFO : limiting 226280 features to 2000 most common
+2012-08-13 03:42:40,207 : INFO : started fold 0 358.347918
+2012-08-13 03:42:40,468 : INFO : 0 train auc 0.899279
+2012-08-13 03:42:47,258 : INFO : 0 test auc 0.860148
+2012-08-13 03:42:47,330 : INFO : importances
+      importance     name
+564     0.001297   #and #
+597     0.001342   #ass #
+1242    0.001374  #more #
+648     0.001414   #bett#
+136     0.001430   # foo#
+1169    0.001512   #l yo#
+1818    0.001513   #ver #
+1842    0.001522   #will#
+221     0.001527   # los#
+1011    0.001542   #hen #
+405     0.001543   # wil#
+937     0.001552  #fuck #
+1316    0.001571   #ng t#
+498     0.001585   #\\n\#
+352     0.001592  # thin#
+375     0.001610   # tro#
+314     0.001643  # shit#
+290     0.001676  # post#
+260     0.001686   # on #
+1926    0.001739       go
+536     0.001771   #ack #
+108     0.001838   # cou#
+86      0.001902  # bitc#
+1327    0.001906   #not #
+247     0.001941   # no #
+583     0.001947  #are a#
+1469    0.001975   #r th#
+91      0.001999   # by #
+216     0.002033   # lit#
+417     0.002125  # you #
+1937    0.002127     life
+1171    0.002165   #lack#
+441     0.002201   #, yo#
+1007    0.002216   #head#
+1416    0.002280   #ou s#
+1210    0.002328   #lose#
+1522    0.002383   #s an#
+1051    0.002386   #ick #
+1436    0.002563   #out #
+1405    0.002766  #ou ar#
+343     0.002901  # the #
+1647    0.003037   #t th#
+193     0.003048   # is #
+1363    0.003109   #old #
+1681    0.003265   #the #
+1775    0.003277   #u re#
+1517    0.003292  #rself#
+1430    0.003303  #our m#
+360     0.003373   # to #
+141     0.003533   # fuc#
+421     0.003537  # your#
+408     0.003573   # wit#
+1468    0.003692   #r mo#
+351     0.003804   # thi#
+1769    0.003911  #u are#
+1420    0.004278  #ou're#
+1781    0.004367   #uck #
+57      0.004564  # and #
+1794    0.004611   #ur m#
+1898    0.004747  #your #
+1078    0.004788   #ing #
+1414    0.004978   #ou r#
+1033    0.005099   #hole#
+1577    0.005144   #shit#
+1432    0.005418  #our s#
+497     0.005523  #You a#
+142     0.005789  # fuck#
+1067    0.006572  #ike y#
+1419    0.006950   #ou'r#
+1482    0.007137   #re a#
+234     0.007334   # mor#
+1056    0.007356  #idiot#
+1061    0.008097   #ife #
+1975    0.008779   stupid
+1728    0.009176   #tion#
+1510    0.009608   #roll#
+1154    0.009883   #ke y#
+1905    0.010570      ass
+181     0.010699   # idi#
+1907    0.011156       be
+1478    0.011580   #rant#
+124     0.011845   # dum#
+1404    0.012419   #ou a#
+65      0.014977   # ass#
+496     0.015389   #You #
+1768    0.016581   #u ar#
+495     0.017104   #YOU #
+1899    0.017417   #your#
+729     0.020761   #diot#
+24      0.021250   # YOU#
+736     0.025190   #dumb#
+1765    0.026582   #tupi#
+426     0.030919   #"You#
+938     0.031049   #fuck#
+1932    0.033031    idiot
+1481    0.037768  #re a #
+1909    0.038387    bitch
+344     0.045617   # the#
+418     0.047172   # you#
+1885    0.047383   #you #
+2012-08-13 03:43:10,716 : INFO : fold 0 done
+2012-08-13 03:43:10,717 : INFO : fold 1 started
+2012-08-13 03:43:27,896 : INFO : limiting 226063 features to 2000 most common
+2012-08-13 03:48:58,126 : INFO : started fold 1 736.266993
+2012-08-13 03:48:58,377 : INFO : 1 train auc 0.902385
+2012-08-13 03:49:05,192 : INFO : 1 test auc 0.851144
+2012-08-13 03:49:05,236 : INFO : importances
+      importance     name
+613     0.001357   #athe#
+1063    0.001373   #if y#
+61      0.001402  # ass #
+1519    0.001414   #s ar#
+911     0.001471   #et t#
+21      0.001510  # YOU #
+99      0.001552   # con#
+17      0.001574   # THE#
+1462    0.001595   #r mo#
+1413    0.001633  #ou're#
+226     0.001634   # mor#
+603     0.001691   #at w#
+1607    0.001719  #stupi#
+1167    0.001720   #lack#
+396     0.001789   # wil#
+1512    0.001801  #rself#
+560     0.001820   #and #
+135     0.001833  # fuck#
+1138    0.001918   #ittl#
+1429    0.002019   #out #
+1875    0.002027   #y yo#
+312     0.002056   # sta#
+1817    0.002092   #ver #
+1776    0.002117   #u're#
+1152    0.002139  #ke yo#
+892     0.002152   #ers #
+179     0.002187   # in #
+1071    0.002194  #ike y#
+642     0.002211   #bitc#
+102     0.002262   # cou#
+1409    0.002328   #ou s#
+80      0.002363  # bitc#
+24      0.002434   # You#
+533     0.002621   #ack #
+251     0.002622   # on #
+940     0.002633  #fuck #
+1203    0.002653   #lose#
+55      0.002667   # and#
+433     0.002751   #, yo#
+412     0.002759  # your#
+1067    0.002907   #ight#
+1978    0.002916     suck
+350     0.003173   # to #
+813     0.003268   #e yo#
+321     0.003298   # suc#
+1794    0.003321   #ur m#
+1679    0.003409   #the #
+333     0.003494  # the #
+1774    0.003597   #u re#
+489     0.003616  #You a#
+490     0.003633   #You'#
+54      0.003644  # and #
+1425    0.003737  #our s#
+1317    0.004165   #not #
+1914    0.004329       do
+1922    0.004411     fuck
+1407    0.004520   #ou r#
+304     0.004636  # shit#
+1941    0.004757      lol
+134     0.005120   # fuc#
+1423    0.005234  #our m#
+1065    0.005236   #ife #
+341     0.005713   # thi#
+1726    0.005950   #tion#
+1082    0.006171   #ing #
+1930    0.006187     have
+1517    0.006303   #s an#
+1398    0.006400  #ou ar#
+1780    0.006605   #uck #
+1574    0.007371   #shit#
+1904    0.007411       be
+1895    0.007794  #your #
+1054    0.007842   #ick #
+1474    0.008797   #re a#
+62      0.008954   # ass#
+1768    0.009138  #u are#
+1151    0.009574   #ke y#
+186     0.009627   # is #
+1976    0.009718   stupid
+1503    0.010253   #roll#
+1902    0.010769      ass
+488     0.012387   #You #
+1896    0.012907   #your#
+174     0.015019   # idi#
+487     0.015230   #YOU #
+1412    0.016640   #ou'r#
+733     0.017842   #dumb#
+1767    0.018723   #u ar#
+724     0.019073   #diot#
+119     0.021983   # dum#
+1933    0.023282    idiot
+22      0.023878   # YOU#
+941     0.028320   #fuck#
+1764    0.029230   #tupi#
+418     0.030038   #"You#
+1473    0.038955  #re a #
+1883    0.040756   #you #
+334     0.042541   # the#
+1907    0.043688    bitch
+409     0.046144   # you#
+2012-08-13 03:49:28,699 : INFO : fold 1 done
+2012-08-13 03:49:28,699 : INFO : fold 2 started
+2012-08-13 03:49:45,723 : INFO : limiting 223919 features to 2000 most common
+2012-08-13 03:55:18,194 : INFO : started fold 2 1116.335739
+2012-08-13 03:55:18,453 : INFO : 2 train auc 0.899383
+2012-08-13 03:55:25,378 : INFO : 2 test auc 0.848793
+2012-08-13 03:55:25,424 : INFO : importances
+      importance     name
+140     0.001485  # for #
+82      0.001487  # bitc#
+188     0.001539   # in #
+1318    0.001543   #not #
+63      0.001547  # ass #
+1926    0.001560     have
+1643    0.001577   #t th#
+749     0.001675   #e be#
+222     0.001686   # los#
+139     0.001770   # foo#
+1014    0.001804   #hen #
+331     0.001826  # stup#
+972     0.001892   #hat #
+57      0.001907   # and#
+539     0.001918   #ack #
+409     0.001921   # wit#
+1603    0.001932  #stupi#
+598     0.001936   #ass #
+1061    0.001940   #ife #
+1063    0.001952   #ight#
+1604    0.001981   #suck#
+1570    0.001985   #shit#
+450     0.001987   #. Yo#
+1401    0.002006   #ou f#
+1422    0.002031   #our #
+1677    0.002135   #the #
+1067    0.002250  #ike y#
+1477    0.002287  #re an#
+344     0.002298  # the #
+1406    0.002341   #ou m#
+1396    0.002393  #ou ar#
+56      0.002443  # and #
+802     0.002474  #e the#
+24      0.002476   # You#
+1413    0.002499  #ou're#
+1991    0.002511    white
+442     0.002525   #, yo#
+1770    0.002550   #u re#
+1122    0.002599   #ist #
+1031    0.002620   #his #
+1515    0.002686   #s an#
+1778    0.002720   #uck #
+937     0.002774  #fuck #
+1976    0.002838     suck
+235     0.002864   # mor#
+1009    0.002912   #head#
+1165    0.002935   #l yo#
+1911    0.002961       do
+141     0.002978   # for#
+418     0.003312  # you #
+145     0.003373  # fuck#
+1351    0.003399   #old #
+498     0.003573   #You'#
+352     0.003609   # thi#
+361     0.003620   # to #
+817     0.003680   #e yo#
+1056    0.003788   #idio#
+1545    0.003890   #s th#
+64      0.003929   # ass#
+1052    0.004192   #ick #
+144     0.004433   # fuc#
+497     0.005278  #You a#
+818     0.005309  #e you#
+1076    0.005512   #ing #
+1462    0.005538   #r mo#
+1472    0.006260   #rant#
+1476    0.006310   #re a#
+1723    0.006434   #tion#
+1893    0.007005  #your #
+1057    0.007159  #idiot#
+126     0.007188  # dumb#
+1149    0.007271   #ke y#
+195     0.007792   # is #
+1395    0.008586   #ou a#
+1902    0.009828       be
+1764    0.010443  #u are#
+1200    0.011038   #lose#
+1975    0.011383   stupid
+1412    0.011731   #ou'r#
+495     0.012012   #YOU #
+125     0.012514   # dum#
+184     0.013279   # idi#
+1900    0.014380      ass
+1894    0.014780   #your#
+1503    0.016482   #roll#
+1918    0.018225     fuck
+22      0.019055   # YOU#
+738     0.019084   #dumb#
+938     0.019157   #fuck#
+730     0.019539   #diot#
+496     0.020657   #You #
+1763    0.021129   #u ar#
+1760    0.021549   #tupi#
+428     0.022530   #"You#
+1929    0.024037    idiot
+1905    0.036081    bitch
+1475    0.042142  #re a #
+345     0.045565   # the#
+419     0.046749   # you#
+1882    0.050944   #you #
+2012-08-13 05:11:12,121 : INFO : fold 2 done
+2012-08-13 05:11:12,121 : INFO : fold 3 started
+2012-08-13 06:59:14,650 : INFO : limiting 228963 features to 2000 most common
+2012-08-13 07:25:13,863 : INFO : started fold 3 13712.004686
+2012-08-13 07:25:14,131 : INFO : 3 train auc 0.902047
+2012-08-13 07:25:20,597 : INFO : 3 test auc 0.855394
+2012-08-13 07:25:20,645 : INFO : importances
+      importance     name
+184     0.001431  # if y#
+1890    0.001436  #you d#
+289     0.001444  # post#
+501     0.001467   #You'#
+1259    0.001468   #n't #
+197     0.001495   # it #
+59      0.001497   # and#
+349     0.001545  # thin#
+415     0.001550  # you #
+1970    0.001600     shit
+328     0.001628  # stup#
+906     0.001674   #ess #
+1318    0.001677   #not #
+816     0.001700   #e yo#
+1977    0.001701     suck
+1466    0.001710   #r mo#
+320     0.001720   # sta#
+330     0.001725  # suck#
+675     0.001851   #come#
+234     0.001904   # mor#
+58      0.001914  # and #
+1103    0.002010   #ions#
+1143    0.002054   #k to#
+1926    0.002107       go
+1063    0.002253   #ight#
+1009    0.002275   #head#
+671     0.002285   #ck t#
+1204    0.002300   #lose#
+1801    0.002317   #ur m#
+447     0.002387   #. Yo#
+265     0.002402   # or #
+489     0.002468   #THE #
+440     0.002469  #, you#
+91      0.002503   # by #
+418     0.002510  # your#
+1358    0.002535   #ome #
+1427    0.002713   #our #
+1915    0.002723       do
+1786    0.002750   #uck #
+648     0.002888   #bitc#
+1429    0.002980  #our m#
+1929    0.002993     have
+1729    0.003022   #tion#
+626     0.003177   #ave #
+406     0.003268   # wit#
+1035    0.003303   #hole#
+542     0.003412   #ack #
+1576    0.003421   #shit#
+141     0.003509   # for#
+144     0.003625   # fuc#
+1167    0.003666   #lack#
+348     0.003678   # thi#
+1777    0.003849   #u re#
+1771    0.004035  #u are#
+1521    0.004268   #s an#
+340     0.004348  # the #
+66      0.004418   # ass#
+86      0.004448  # bitc#
+1682    0.004475   #the #
+1031    0.004693   #his #
+192     0.004945   # is #
+357     0.005192   # to #
+500     0.005365  #You a#
+1922    0.005600     fuck
+1066    0.005627  #ike y#
+1477    0.005632   #rant#
+1402    0.006094  #ou ar#
+1077    0.006354   #ing #
+1481    0.006589   #re a#
+1052    0.006961   #ick #
+1165    0.007121   #l yo#
+1412    0.007591   #ou r#
+1401    0.007699   #ou a#
+1942    0.007876      lol
+1905    0.008815      ass
+1509    0.008875   #roll#
+439     0.009055   #, yo#
+1907    0.009919       be
+181     0.010058   # idi#
+1898    0.010424  #your #
+24      0.011494   # YOU#
+1150    0.011771   #ke y#
+1899    0.012540   #your#
+499     0.012933   #You #
+1976    0.013465   stupid
+1417    0.014260   #ou'r#
+127     0.015685   # dum#
+738     0.019752   #dumb#
+498     0.019855   #YOU #
+1770    0.022203   #u ar#
+1767    0.025207   #tupi#
+1932    0.025586    idiot
+729     0.028070   #diot#
+939     0.028398   #fuck#
+1887    0.032051   #you #
+1909    0.032063    bitch
+424     0.036319   #"You#
+1480    0.040570  #re a #
+341     0.047213   # the#
+416     0.059321   # you#
+2012-08-13 07:25:44,285 : INFO : fold 3 done
+2012-08-13 07:25:44,285 : INFO : fold 4 started
+2012-08-13 07:26:01,439 : INFO : limiting 225318 features to 2000 most common
+2012-08-13 07:31:30,475 : INFO : started fold 4 14088.616011
+2012-08-13 07:31:30,725 : INFO : 4 train auc 0.909458
+2012-08-13 07:31:37,662 : INFO : 4 test auc 0.838458
+2012-08-13 07:31:37,706 : INFO : importances
+      importance     name
+1074    0.001336   #ing #
+1006    0.001356   #head#
+1312    0.001400   #not #
+135     0.001420   # for#
+611     0.001443   #athe#
+1057    0.001447   #ife #
+1161    0.001470   #lack#
+22      0.001475  # You #
+1642    0.001504  #t the#
+325     0.001520   # suc#
+1605    0.001520   #suck#
+1082    0.001529  #ing t#
+591     0.001530   #ass #
+315     0.001568   # sta#
+1640    0.001585   #t th#
+558     0.001590   #and #
+88      0.001591   # by #
+1052    0.001652  #idiot#
+214     0.001662   # lit#
+1148    0.001689  #ke yo#
+417     0.001733   #!!!!#
+1547    0.001744  #s to #
+491     0.001772   #You'#
+1414    0.001774  #ould #
+788     0.001850   #e th#
+23      0.001999   # You#
+1715    0.002031   #tic #
+61      0.002049  # ass #
+1115    0.002088   #is t#
+1544    0.002103   #s th#
+1917    0.002110     fuck
+969     0.002231   #hat #
+572     0.002284   #any #
+1100    0.002306   #ions#
+54      0.002335  # and #
+1911    0.002417       do
+218     0.002564   # los#
+355     0.002636   # to #
+1474    0.002638  #re an#
+1603    0.002642   #stup#
+324     0.002643  # stup#
+1395    0.002657  #ou ar#
+1515    0.002689   #s an#
+1746    0.002693   #trol#
+1645    0.002835   #t to#
+1764    0.002856  #u are#
+1027    0.002910   #his #
+1047    0.003023   #ick #
+346     0.003112   # thi#
+478     0.003148   #ING #
+1419    0.003195   #our #
+1676    0.003274   #the #
+181     0.003473   # if #
+1411    0.003910  #ou're#
+1723    0.004097   #tion#
+1459    0.004137   #r mo#
+83      0.004360  # bitc#
+190     0.004447   # is #
+92      0.004518   # can#
+1063    0.004701  #ike y#
+1777    0.005241   #uck #
+1410    0.005609   #ou'r#
+62      0.005689   # ass#
+123     0.005754  # dumb#
+338     0.006015  # the #
+231     0.006366   # mor#
+1030    0.007589   #hole#
+1196    0.007838   #lose#
+1473    0.008067   #re a#
+490     0.008965  #You a#
+1892    0.009436  #your #
+933     0.009552  #fuck #
+489     0.009869   #You #
+1502    0.010338   #roll#
+1974    0.010499   stupid
+1893    0.010691   #your#
+1421    0.010829  #our m#
+138     0.011413   # fuc#
+1901    0.011447       be
+122     0.011607   # dum#
+1469    0.012213   #rant#
+179     0.013206   # idi#
+21      0.013808   # YOU#
+1899    0.014257      ass
+720     0.015307   #diot#
+1147    0.016235   #ke y#
+1394    0.016483   #ou a#
+1763    0.018732   #u ar#
+934     0.019619   #fuck#
+488     0.019893   #YOU #
+729     0.023963   #dumb#
+1760    0.027151   #tupi#
+420     0.029319   #"You#
+1928    0.032334    idiot
+1472    0.038093  #re a #
+1880    0.039177   #you #
+1659    0.039851   #tard#
+412     0.042206   # you#
+1903    0.043912    bitch
+339     0.044405   # the#
+2012-08-13 07:32:01,147 : INFO : fold 4 done
+2012-08-13 07:32:23,194 : INFO : limiting 258547 features to 2000 most common
+2012-08-13 16:21:03,971 : INFO : saved to submissions/submission15.csv
+2012-08-13 18:41:27,043 : INFO : terminated 2 lemmatizer processes
