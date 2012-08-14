@@ -71,24 +71,22 @@ def ngrams(seq):
 def _split_enchant(s):
 	words2 = utils.lemmatize(s)
 	lems = [x.split('/')[0] for x in words2]
+	bigs = []
+	for i in range(2,len(lems)):
+			bigs.append("_".join(lems[i-2:i]))
+	for lem in lems:
+			s = '##' + lem + '##'
+			for order in range(3,9):
+				for i in range(order,len(s)):
+					bigs.append(s[i-order:order])
 	
-	"""
-	# some word ngrams
-	for order in range(2,3):
-		for i in range(order,len(lems)):
-			lems.append("_".join(s[i-order:i]))
-	return lems
-	"""
-	# some character ngrams
-	for order in range(4,6):
-		for i in range(order,len(s)):
-			lems.append("#" + s[i-order:i] + "#")
-	return lems
+	
+	return lems + bigs
 	
 splitbag = np.frompyfunc(_split_enchant,1,1)
 
 
-def train_bag(text, n=500,y=None):
+def train_bag(text, n=500,y=None,select=False):
 		"most_common is easy, but when bigrams are in the mix with unigrams, maybe not the best."
 		bag = Counter()
 		for document in splitbag(text):
@@ -100,7 +98,7 @@ def train_bag(text, n=500,y=None):
 				del bag[bad_key]
 		"""
 		
-		if True:
+		if y == None or select == False: 
 				logging.info("limiting %d features to %d most common" % (len(bag),n))
 				return dict(bag.most_common(n))
 		else:

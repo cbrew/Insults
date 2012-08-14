@@ -11,14 +11,46 @@ import sys
 import pylab as pl
 import concurrent.futures as futures
 
-params = dict(n_estimators=500,learn_rate=0.01,subsample=0.5,random_state=0)
-nfeats = 2000
+# 
+nfeats = 5000
+
+"""
+Current best uses GradientBoostingClassifier and 5000 features selected as most frequent.
+{'n_estimators': 400, 'subsample': 0.5, 'random_state': 0, 'learn_rate': 0.025}.
+Did not record which features went in (foolish, right?), but there were obviously a lot of them...
+
+2012-08-12 18:03:46,390 : INFO : started fold 0 657.227415
+2012-08-12 18:03:46,772 : INFO : 0 train auc 0.936763
+2012-08-12 18:03:57,129 : INFO : 0 test auc 0.894781
+2012-08-12 18:04:32,818 : INFO : limiting 155562 features to 5000
+2012-08-12 18:14:55,571 : INFO : started fold 1 1326.408069
+2012-08-12 18:14:55,971 : INFO : 1 train auc 0.939800
+2012-08-12 18:15:07,957 : INFO : 1 test auc 0.877702
+2012-08-12 18:15:45,067 : INFO : limiting 154198 features to 5000
+2012-08-12 18:26:01,762 : INFO : started fold 2 1992.599039
+2012-08-12 18:26:02,154 : INFO : 2 train auc 0.940173
+2012-08-12 18:26:12,892 : INFO : 2 test auc 0.866636
+2012-08-12 18:26:49,283 : INFO : limiting 157722 features to 5000
+2012-08-12 18:37:09,402 : INFO : started fold 3 2660.238973
+2012-08-12 18:37:09,795 : INFO : 3 train auc 0.937719
+2012-08-12 18:37:20,312 : INFO : 3 test auc 0.877904
+2012-08-12 18:37:57,923 : INFO : limiting 154853 features to 5000
+2012-08-12 18:48:13,541 : INFO : started fold 4 3324.377875
+2012-08-12 18:48:13,959 : INFO : 4 train auc 0.940377
+2012-08-12 18:48:25,224 : INFO : 4 test auc 0.852312
+"""
+
 
 train = pandas.read_table('Data/train.csv',sep=',')
+# clf_class = linear_model.LogisticRegression
+# params = dict(penalty='l1')
+clf_class = ensemble.GradientBoostingClassifier
+params = dict(n_estimators=400,learn_rate=0.025,subsample=0.5,random_state=0)
+
 
 def do_train(fold,train_i,test_i):
-		
-		rf = ensemble.GradientBoostingClassifier(**params)
+		rf = clf_class(**params)
+		logging.info('classifier is %r' % rf)
 		ftrain = train[train_i]
 		ftest = train[test_i]
 		ytrain = np.array(ftrain.Insult).astype('float64')
@@ -33,40 +65,31 @@ def do_train(fold,train_i,test_i):
 		X_test =  features.bag_representation(bag, ftest.Comment)
 		ypred = rf.predict_proba(X_test)[:,1]
 		logging.info("%d test auc %f" % (fold,ml_metrics.auc(y_test,ypred)))
-		df = pandas.DataFrame(dict(importance=rf.feature_importances_,name=X_test.columns))
-		df = df.sort("importance")
-		logging.info("importances\n%r" % (df.tail(100)))
 		
-		# compute test set auc for each fold
-		test_deviance = np.zeros((params['n_estimators'],), dtype=np.float64)
-		for i, y_pred in enumerate(rf.staged_decision_function(X_test)):
-			test_deviance[i] = ml_metrics.auc(y_test, y_pred)
-		return test_deviance,fold
-
+		
 start = time.time()
 
 kf = cross_validation.KFold(len(train),5,indices=False)
-print nfeats,params,start
-pl.figure()		
+print nfeats,params
+# pl.figure()		
 for i,(train_i,test_i) in enumerate(kf):
 		logging.info("fold %d started" % i)	
-		test_deviance,fold = do_train(i,train_i,test_i)
-		pl.plot((np.arange(test_deviance.shape[0]) + 1)[::5], test_deviance[::5], '-', label=("fold %d" % fold))
+		do_train(i,train_i,test_i)
+		# pl.plot((np.arange(test_deviance.shape[0]) + 1)[::5], test_deviance[::5], '-', label=("fold %d" % fold))
 		logging.info("fold %d done" % i)
-	
-
+		
 
 		
-pl.legend(loc='lower right')
-pl.xlabel('Boosting Iterations (learn rate=%f)' % params["learn_rate"])
-pl.ylabel('Test Set AUC')
-pl.show()
+#pl.legend(loc='lower right')
+# pl.xlabel('Boosting Iterations (learn rate=%f)' % params["learn_rate"])
+#pl.ylabel('Test Set AUC')
+#pl.show()
 
 		
 	
 	
 test = pandas.read_table('Data/test.csv',sep=',')
-rf = ensemble.GradientBoostingClassifier(**params)
+rf = clf_class(**params)
 ytrain = np.array(train.Insult).astype('float64')
 bag = features.train_bag(train.Comment,nfeats,y=ytrain)
 fea = features.bag_representation(bag, train.Comment)
