@@ -20,7 +20,7 @@ class MyLogisticRegression(linear_model.LogisticRegression):
 pipeline = pipeline.Pipeline([
     ('vect', feature_extraction.text.CountVectorizer(lowercase=True,max_n=2)),
     ('tfidf', feature_extraction.text.TfidfTransformer()),
-    ('clf', MyLogisticRegression(tol=1e-3)),
+    ('clf', linear_model.SGDRegressor()),
 ])
 
 parameters = {
@@ -31,24 +31,21 @@ parameters = {
     #  'vect__lowercase': (True,False),
 	
     # 'vect__max_features': (None, 10, 50, 100, 500,1000,5000, 10000, 50000),
-    'vect__max_n': (1, 2),  # words or bigrams
+    'vect__max_n': (1,2),  # words,bigrams,trigrams
 #    'tfidf__use_idf': (True, False),
 #    'tfidf__norm': ('l1', 'l2'),
-    'clf__C': (1,5,25,35,45,50,75,80,85,90,100),
+    # 'clf__C': (1e-2,1,1e+2),
+    # 'clf__C': (10,15,20,21,22,23,24,25,26,27,28,29,30,35,40,45,50,55,60,65,70,75,80,85,100,1000),
     # 'clf__tol': (1e-3,1e-4),
-    # 'clf__penalty': ("l1","l2"),
-    'clf__class_weight': ("auto",None),
-		    
-# 'clf__alpha': (0.00001, 0.000001),
-# 'clf__penalty': ('l2', 'elasticnet'),
-#    'clf__n_iter': (10, 50, 80),
+    'clf__penalty': ("l1","elasticnet"),
+    'clf__alpha': 10.0**-np.arange(6.5,8.0,step=0.5),
+    'clf__n_iter': (1000,1500,2000),
 }
 
 
-clf =  grid_search.GridSearchCV(pipeline, parameters, n_jobs=2,score_func=ml_metrics.auc,verbose=2)  
-# XXX add score_func=ml_metrics.auc, which requires a custom version of LogisticRegression that
-# predicts using predict_proba
 
+
+clf =  grid_search.GridSearchCV(pipeline, parameters, n_jobs=2,score_func=ml_metrics.auc,verbose=1)  
 
 			
 ss = 0
@@ -74,15 +71,14 @@ clf.fit(train.Comment,train.Insult)
 best_parameters = clf.best_estimator_.get_params()
 for param_name in sorted(parameters.keys()):
 	logging.info("\tL %s: %r" % (param_name, best_parameters[param_name]))
-ypred = clf.predict_proba(leaderboard.Comment)[:,1]
+ypred = clf.predict(leaderboard.Comment)
 submission = pandas.read_table('Data/sample_submission_null.csv',sep=',')
 submission['Insult'] = ypred
 for x in itertools.count(1):
 		filename = "submissions/submission%d.csv" % x
 		if os.path.exists(filename):
 			next
-		else:
-			
+		else:			
 			submission.to_csv(filename,index=False)
 			logging.info("saved to %s" % filename)
 			break
