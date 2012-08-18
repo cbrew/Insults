@@ -1,4 +1,9 @@
+"""
+Code for the insults competition run by Kaggle in August 2012.
 
+Winning combination is grid search + sgd regressor.
+
+"""
 import pandas
 from sklearn import feature_extraction,linear_model,cross_validation,ensemble,svm,pipeline,grid_search
 import ml_metrics
@@ -7,10 +12,27 @@ import os
 import itertools
 import logging
 import datetime
+import pickle
+import random
+import joblib
 
+self_train = False
 
 logging.basicConfig(filename="vectorize.log",mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+
 train = pandas.read_table('Data/train.csv',sep=',')
+
+best = pandas.read_table('best/best.csv',sep=',')
+
+if self_train:
+		# when we self_train, crucial to shuffle before cross-validation
+		logging.info('original training %r',train.shape)
+		train = pandas.concat([train,best],ignore_index=True)
+		train['Temp'] = random.shuffle(range(train.shape[0]))
+		train = train.sort('Temp')
+		del train['Temp']
+		logging.info('new training %r',train.shape)
+
 leaderboard = pandas.read_table('Data/test.csv',sep=',')
 
 class MyLogisticRegression(linear_model.LogisticRegression):
@@ -37,7 +59,7 @@ grid["sgd_w"] = {
     # 'clf__C': (10,15,20,21,22,23,24,25,26,27,28,29,30,35,40,45,50,55,60,65,70,75,80,85,100,1000),
     # 'clf__tol': (1e-3,1e-4),
     'clf__penalty': ("l1","elasticnet"),
-    'clf__alpha': 10.0**-np.arange(6.0,8.0,step=1.0),
+    'clf__alpha': 10.0**-np.arange(7.0,8.3,step=0.2),
     'clf__n_iter': (1000,1250,1500,1750,2000),
 }
 
@@ -57,25 +79,31 @@ grid["sgd_c"] = {
     # 'clf__C': (10,15,20,21,22,23,24,25,26,27,28,29,30,35,40,45,50,55,60,65,70,75,80,85,100,1000),
     # 'clf__tol': (1e-3,1e-4),
     'clf__penalty': ("l1", ),
-    'clf__alpha': 10.0**-np.arange(6.0,8.0,step=1.0),
-    'clf__n_iter': (1500,),
+    'clf__alpha': 10.0**-np.arange(6.8,7.3,step=0.1),
+		# 'clf__alpha': 10.0**-np.arange(6.5,8.5,step=1.0),
+    'clf__n_iter': (2600,2750,2900),
 }
 
 
-
-clfs = dict(sgd=(linear_model.SGDRegressor,grid["sgd_w"]),
-            sgd_char=(linear_model.SGDRegressor,grid["sgd_c"]))
-
-
-clfc,clfp = clfs["sgd_char"]
+fixed = {}
+fixed['sgd_c'] = {"shuffle": True}
+fixed['sgd_w'] = {}
 
 
-print clfc,clfp
+
+clfs = dict(sgd=(linear_model.SGDRegressor,fixed['sgd_w'],grid["sgd_w"]),
+            sgd_char=(linear_model.SGDRegressor,fixed['sgd_c'],grid["sgd_c"]))
+
+
+clfc,clfix,clfp = clfs["sgd_char"]
+
+
+print clfc,clfix,clfp
 
 pipeline1 = pipeline.Pipeline([
     ('vect', feature_extraction.text.CountVectorizer(lowercase=True,max_n=2)),
     ('tfidf', feature_extraction.text.TfidfTransformer()),
-    ('clf',clfc()),
+    ('clf',clfc(**clfix)),
 ])
 
 
@@ -96,7 +124,6 @@ ss = 0
 n = 0
 kf = cross_validation.KFold(len(train),5,indices=False)
 for i,(train_i,test_i) in enumerate(kf):
-	n_samples = train_i.sum()
 	logging.info('fold %d' % i)
 	clf.fit(train[train_i].Comment,train[train_i].Insult)
 	best_parameters = clf.best_estimator_.get_params()
@@ -105,11 +132,12 @@ for i,(train_i,test_i) in enumerate(kf):
 	ypred = clf.predict(train[train_i].Comment) 
 	logging.info("%d train=%f" % (i, ml_metrics.auc(np.array(train[train_i].Insult),ypred)))
 	ypred = clf.predict(train[test_i].Comment)
-        save_predictions(ypred,i)
 	est = ml_metrics.auc(np.array(train[test_i].Insult),ypred)
-	logging.info("test %f" % est)
+	logging.info("%d test %f" % (i,est))
 	ss += est
 	n  += 1
+	
+	
 logging.info('Expected score %f' % (ss/n))
 logging.info("Starting leaderboard")
 clf.fit(train.Comment,train.Insult)
@@ -123,14 +151,17 @@ ypred[ypred < 0] = 0
 submission['Insult'] = ypred
 
 
-
-
+# we create a submission...
 for x in itertools.count(1):
 		filename = "submissions/submission%d.csv" % x
 		if os.path.exists(filename):
 			next
 		else:			
 			submission.to_csv(filename,index=False)
-			logging.info("saved to %s" % filename)
+			logging.info("result saved to %s" % filename)
+			model_filename = "models/model%d" % x
+			joblib.dump(clf.best_estimator_,model_filename,compress=3)
+			logging.info("model saved to %s" % model_filename)
+			
 			break
 print "Done"
