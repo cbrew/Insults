@@ -20,7 +20,7 @@ self_train = False
 
 logging.basicConfig(filename="vectorize.log",mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
-train = pandas.read_table('Data/train.csv',sep=',')
+train = pandas.read_table('Data/train_corrected.csv',sep=',')
 
 best = pandas.read_table('best/best.csv',sep=',')
 
@@ -33,7 +33,7 @@ if self_train:
 		del train['Temp']
 		logging.info('new training %r',train.shape)
 
-leaderboard = pandas.read_table('Data/test.csv',sep=',')
+leaderboard = pandas.read_table('Data/test_corrected.csv',sep=',')
 
 class MyLogisticRegression(linear_model.LogisticRegression):
     def predict(self, X):
