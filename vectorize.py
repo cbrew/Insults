@@ -16,15 +16,24 @@ import pickle
 import random
 import joblib
 
-self_train = False
+self_train = True
 
 logging.basicConfig(filename="vectorize.log",mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
-train = pandas.read_table('Data/train_corrected.csv',sep=',')
+train = pandas.read_table('Data/train.csv',sep=',')
 
 best = pandas.read_table('best/best.csv',sep=',')
 
 if self_train:
+		# this code is mistaken, because the time to add in best is inside
+		# the cross-validation loop, in order to ensure that the test part
+		# of the cross-val folds is the same as in the no self-train condition
+		# nonetheless, we are going to try submitting the result, just in case
+		# it works...
+		# 
+		# If it does work, it is going to be hard to see why!
+		
+		
 		# when we self_train, crucial to shuffle before cross-validation
 		logging.info('original training %r',train.shape)
 		train = pandas.concat([train,best],ignore_index=True)
@@ -33,7 +42,7 @@ if self_train:
 		del train['Temp']
 		logging.info('new training %r',train.shape)
 
-leaderboard = pandas.read_table('Data/test_corrected.csv',sep=',')
+leaderboard = pandas.read_table('Data/test.csv',sep=',')
 
 class MyLogisticRegression(linear_model.LogisticRegression):
     def predict(self, X):
@@ -72,16 +81,16 @@ grid["sgd_c"] = {
     'vect__analyzer': ['char'],
     'vect__lowercase': [False],
     # 'vect__max_features': (None, 10, 50, 100, 500,1000,5000, 10000, 50000),
-    'vect__max_n': (5, ),  # words,bigrams,trigrams
+    'vect__max_n': (5,6 ),  # words,bigrams,trigrams, etc.
     #    'tfidf__use_idf': (True, False),
     #    'tfidf__norm': ('l1', 'l2'),
     # 'clf__C': (1e-2,1,1e+2),
     # 'clf__C': (10,15,20,21,22,23,24,25,26,27,28,29,30,35,40,45,50,55,60,65,70,75,80,85,100,1000),
     # 'clf__tol': (1e-3,1e-4),
     'clf__penalty': ("l1", ),
-    'clf__alpha': 10.0**-np.arange(6.8,7.3,step=0.1),
+    'clf__alpha': 10.0**-np.arange(6.0,7.5,step=0.5),
 		# 'clf__alpha': 10.0**-np.arange(6.5,8.5,step=1.0),
-    'clf__n_iter': (2600,2750,2900),
+    'clf__n_iter': (2700,2800,3000),
 }
 
 
