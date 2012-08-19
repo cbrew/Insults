@@ -24,23 +24,7 @@ train = pandas.read_table('Data/train.csv',sep=',')
 
 best = pandas.read_table('best/best.csv',sep=',')
 
-if self_train:
-		# this code is mistaken, because the time to add in best is inside
-		# the cross-validation loop, in order to ensure that the test part
-		# of the cross-val folds is the same as in the no self-train condition
-		# nonetheless, we are going to try submitting the result, just in case
-		# it works...
-		# 
-		# If it does work, it is going to be hard to see why!
-		
-		
-		# when we self_train, crucial to shuffle before cross-validation
-		logging.info('original training %r',train.shape)
-		train = pandas.concat([train,best],ignore_index=True)
-		train['Temp'] = random.shuffle(range(train.shape[0]))
-		train = train.sort('Temp')
-		del train['Temp']
-		logging.info('new training %r',train.shape)
+
 
 leaderboard = pandas.read_table('Data/test.csv',sep=',')
 
@@ -81,16 +65,16 @@ grid["sgd_c"] = {
     'vect__analyzer': ['char'],
     'vect__lowercase': [False],
     # 'vect__max_features': (None, 10, 50, 100, 500,1000,5000, 10000, 50000),
-    'vect__max_n': (5,6 ),  # words,bigrams,trigrams, etc.
+    'vect__max_n': (5,),  # words,bigrams,trigrams, etc.
     #    'tfidf__use_idf': (True, False),
     #    'tfidf__norm': ('l1', 'l2'),
     # 'clf__C': (1e-2,1,1e+2),
     # 'clf__C': (10,15,20,21,22,23,24,25,26,27,28,29,30,35,40,45,50,55,60,65,70,75,80,85,100,1000),
     # 'clf__tol': (1e-3,1e-4),
     'clf__penalty': ("l1", ),
-    'clf__alpha': 10.0**-np.arange(6.0,7.5,step=0.5),
+    'clf__alpha': 10.0**-np.linspace(6.0,8.0,num=5),
 		# 'clf__alpha': 10.0**-np.arange(6.5,8.5,step=1.0),
-    'clf__n_iter': (2700,2800,3000),
+    'clf__n_iter': (2000,3000),
 }
 
 
@@ -133,13 +117,26 @@ ss = 0
 n = 0
 kf = cross_validation.KFold(len(train),5,indices=False)
 for i,(train_i,test_i) in enumerate(kf):
+	ftrain = train[train_i]
+	if self_train:
+
+
+			# when we self_train, crucial to shuffle before cross-validation
+			logging.info('original training %r',ftrain.shape)
+			ftrain = pandas.concat([ftrain,best],ignore_index=True)
+			ftrain['Temp'] = random.shuffle(range(ftrain.shape[0]))
+			ftrain = ftrain.sort('Temp')
+			del ftrain['Temp']
+			logging.info('new training %r',ftrain.shape)
+	
+	
 	logging.info('fold %d' % i)
-	clf.fit(train[train_i].Comment,train[train_i].Insult)
+	clf.fit(ftrain.Comment,ftrain.Insult)
 	best_parameters = clf.best_estimator_.get_params()
 	for param_name in sorted(clfp.keys()):
 		logging.info("\t%d %s: %r" % (i,param_name, best_parameters[param_name]))
-	ypred = clf.predict(train[train_i].Comment) 
-	logging.info("%d train=%f" % (i, ml_metrics.auc(np.array(train[train_i].Insult),ypred)))
+	ypred = clf.predict(ftrain.Comment) 
+	logging.info("%d train=%f" % (i, ml_metrics.auc(np.array(ftrain.Insult),ypred)))
 	ypred = clf.predict(train[test_i].Comment)
 	est = ml_metrics.auc(np.array(train[test_i].Insult),ypred)
 	logging.info("%d test %f" % (i,est))
