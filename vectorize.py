@@ -69,13 +69,8 @@ import joblib
 self_train = True
 
 logging.basicConfig(filename="vectorize.log",mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-
 train = pandas.read_table('Data/train.csv',sep=',')
-
 best = pandas.read_table('best/best.csv',sep=',')
-
-
-
 leaderboard = pandas.read_table('Data/test.csv',sep=',')
 
 
@@ -145,25 +140,6 @@ grid["sgd_c"] = {
 }
 
 
-fixed = {}
-fixed['sgd_c'] = {"shuffle": True}
-fixed['sgd_w'] = {}
-clfs = dict(sgd=(MySGDRegressor,fixed['sgd_w'],grid["sgd_w"]),
-            sgd_char=(MySGDRegressor,fixed['sgd_c'],grid["sgd_c"]))
-
-
-clfc,clfix,clfp = clfs["sgd_char"]
-
-
-print clfc,clfix,clfp
-
-pipeline1 = pipeline.Pipeline([
-    ('vect', feature_extraction.text.CountVectorizer(lowercase=True,max_n=2)),
-    ('tfidf', feature_extraction.text.TfidfTransformer()),
-    ('clf',clfc(**clfix)),
-])
-
-
 
 def save_predictions(ypred,i):
     for x in itertools.count(1):
@@ -174,42 +150,64 @@ def save_predictions(ypred,i):
             np.save(filename,ypred)
             break
 
+
+fixed = {}
+fixed['sgd_c'] = {"shuffle": True}
+fixed['sgd_w'] = {}
+clfs = dict(sgd=(MySGDRegressor,fixed['sgd_w'],grid["sgd_w"]),
+            sgd_char=(MySGDRegressor,fixed['sgd_c'],grid["sgd_c"]))
+
+
+
+
+clfc,clfix,clfp = clfs["sgd_char"]
+
+
+print clfc,clfix,clfp
+
+pipeline1 = pipeline.Pipeline([
+		    		('vect', feature_extraction.text.CountVectorizer(lowercase=True,max_n=2)),
+		    		('tfidf', feature_extraction.text.TfidfTransformer()),
+		    		('clf',clfc(**clfix)),
+			])
+
 clf =  grid_search.GridSearchCV(pipeline1, clfp, n_jobs=2,score_func=ml_metrics.auc,verbose=3)  
 
-			
-ss = 0
-n = 0
-kf = cross_validation.KFold(len(train),5,indices=False)
-for i,(train_i,test_i) in enumerate(kf):
-	ftrain = train[train_i]
-	if self_train:
-			# when we self_train, crucial to shuffle before cross-validation
-			logging.info('original training %r',ftrain.shape)
-			ftrain = pandas.concat([ftrain,best],ignore_index=True)
-			ftrain['Temp'] = random.shuffle(range(ftrain.shape[0]))
-			ftrain = ftrain.sort('Temp')
-			del ftrain['Temp']
-			logging.info('new training %r',ftrain.shape)
-	
-	
-	logging.info('fold %d' % i)
-	clf.fit(ftrain.Comment,ftrain.Insult)
-	best_parameters = clf.best_estimator_.get_params()
-	for param_name in sorted(clfp.keys()):
-		logging.info("\t%d %s: %r" % (i,param_name, best_parameters[param_name]))
-	ypred = clf.predict(ftrain.Comment) 
-	logging.info("%d train=%f" % (i, ml_metrics.auc(np.array(ftrain.Insult),ypred)))
-	ypred = clf.predict(train[test_i].Comment)
-	est = ml_metrics.auc(np.array(train[test_i].Insult),ypred)
-	logging.info("%d test %f" % (i,est))
-	ss += est
-	n  += 1
-	
-	
-logging.info('Expected score %f' % (ss/n))
-logging.info("Starting leaderboard")
 
-if self_train:
+def training():
+			
+	ss = 0
+	n = 0
+	kf = cross_validation.KFold(len(train),5,indices=False)
+	for i,(train_i,test_i) in enumerate(kf):
+		ftrain = train[train_i]
+		if self_train:
+				# when we self_train, crucial to shuffle before cross-validation
+				logging.info('original training %r',ftrain.shape)
+				ftrain = pandas.concat([ftrain,best],ignore_index=True)
+				ftrain['Temp'] = random.shuffle(range(ftrain.shape[0]))
+				ftrain = ftrain.sort('Temp')
+				del ftrain['Temp']
+				logging.info('new training %r',ftrain.shape)
+		logging.info('fold %d' % i)
+		clf.fit(ftrain.Comment,ftrain.Insult)
+		best_parameters = clf.best_estimator_.get_params()
+		for param_name in sorted(clfp.keys()):
+			logging.info("\t%d %s: %r" % (i,param_name, best_parameters[param_name]))
+		ypred = clf.predict(ftrain.Comment) 
+		logging.info("%d train=%f" % (i, ml_metrics.auc(np.array(ftrain.Insult),ypred)))
+		ypred = clf.predict(train[test_i].Comment)
+		est = ml_metrics.auc(np.array(train[test_i].Insult),ypred)
+		logging.info("%d test %f" % (i,est))
+		ss += est
+		n  += 1
+	logging.info('Expected score %f' % (ss/n))
+	
+
+
+def predict():
+	logging.info("Starting leaderboard")
+	if self_train:
 		kf = cross_validation.KFold(len(best),5,indices=False)
 		predictions = []
 		for i,(train_i,test_i) in enumerate(kf):
@@ -226,41 +224,38 @@ if self_train:
 			best_parameters = clf.best_estimator_.get_params()
 			for param_name in sorted(clfp.keys()):
 				logging.info("\tL %s: %r" % (param_name, best_parameters[param_name]))
-			predictions.append(pandas.Series(clf.predict(fbtest.Insult),index=fbtest.index))
-		# if I have done this right, should be in correct order of predictions
+			predictions.append(pandas.Series(clf.predict(fbtest.Comment),index=fbtest.index))
+		# if I have done this right, ypred should be in correct order of predictions
 		ypred = pandas.concat(predictions)
+			
 		
-				
-		
-		
-else:
-	clf.fit(train.Comment,train.Insult)
-	best_parameters = clf.best_estimator_.get_params()
-	for param_name in sorted(clfp.keys()):
-		logging.info("\tL %s: %r" % (param_name, best_parameters[param_name]))
-	ypred = clf.predict(leaderboard.Comment)
+	else:
+		clf.fit(train.Comment,train.Insult)
+		best_parameters = clf.best_estimator_.get_params()
+		for param_name in sorted(clfp.keys()):
+			logging.info("\tL %s: %r" % (param_name, best_parameters[param_name]))
+		ypred = clf.predict(leaderboard.Comment)
 	
 
 
 
 
 
-# we create a submission...
-submission = pandas.read_table('Data/sample_submission_null.csv',sep=',')
-submission['Insult'] = ypred
-for x in itertools.count(1):
-		filename = "submissions/submission%d.csv" % x
-		if os.path.exists(filename):
-			next
-		else:			
-			submission.to_csv(filename,index=False)
-			logging.info("result saved to %s" % filename)
-			model_filename = "models/model%d" % x
-			# XXX following line does not save the right model when self-training.
-			# Instead, it saves the model for fold k-1 of the cross-val.
-			# work is needed to create a model based on all folds.
-			joblib.dump(clf.best_estimator_,model_filename,compress=3)
-			logging.info("model saved to %s" % model_filename)
-			
-			break
-print "Done"
+	# we create a submission...
+	submission = pandas.read_table('Data/sample_submission_null.csv',sep=',')
+	submission['Insult'] = ypred
+	for x in itertools.count(1):
+			filename = "submissions/submission%d.csv" % x
+			if os.path.exists(filename):
+				next
+			else:			
+				submission.to_csv(filename,index=False)
+				logging.info("result saved to %s" % filename)
+				model_filename = "models/model%d" % x
+				# XXX following line does not save the right model when self-training.
+				# Instead, it saves the model for fold k-1 of the cross-val.
+				# work is needed to create a model based on all folds.
+				joblib.dump(clf.best_estimator_,model_filename,compress=3)
+				logging.info("model saved to %s" % model_filename)
+				break
+
