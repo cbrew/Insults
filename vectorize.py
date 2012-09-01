@@ -41,10 +41,10 @@ Ideas
 
 Questions
 =========
-- why not a classifier?
+- why not a classifier? Trying it.
 - what is the best thing to do about the self-training?
 - did we really self-train the first time? Maybe we did, but it doesn't work
-- will it help to self-train and cross-validate?
+- will it help to cross-validate in order to produce self-train predictions? Apparently not so far
 
 Desired interface
 =================
@@ -64,9 +64,10 @@ import logging
 import datetime
 import random
 import joblib
+from sklearn.feature_selection import chi2,SelectKBest
 
 
-self_train = True
+self_train = False
 
 logging.basicConfig(filename="vectorize.log",mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 train = pandas.read_table('Data/train.csv',sep=',')
@@ -96,6 +97,14 @@ class MySGDRegressor(linear_model.SGDRegressor):
 		return round_predictions(linear_model.SGDRegressor.predict(self,X))
 
 
+class MySGDClassifier(linear_model.SGDClassifier):
+	"""
+	According to the docs, this has probability of positive class 
+	as the return value for predict-proba.
+	"""
+	def predict(self,X):
+			return linear_model.SGDClassifier.predict_proba(self,X)
+
 class MyLogisticRegression(linear_model.LogisticRegression):
     def predict(self, X):
         return linear_model.LogisticRegression.predict_proba(self, X)[:,1]
@@ -113,7 +122,7 @@ grid["sgd_w"] = {
     #  'vect__lowercase': (True,False),
 	
     # 'vect__max_features': (None, 10, 50, 100, 500,1000,5000, 10000, 50000),
-    'vect__max_n': (1,2,3),  # words,bigrams,trigrams
+    'vect__ngram_range': ((1,1),(1,2),(1,3),(2,3)),  # words,bigrams,trigrams
     #    'tfidf__use_idf': (True, False),
     #    'tfidf__norm': ('l1', 'l2'),
     # 'clf__C': (1e-2,1,1e+2),
@@ -132,11 +141,11 @@ grid["sgd_w"] = {
 grid["sgd_c"] = {
     'vect__analyzer': ['char'],
     'vect__lowercase': [False],
-    'vect__max_n': (5,),  # words,bigrams,trigrams, etc.
-		'clf__loss': ("huber",),
-    'clf__penalty': ("l1", ),
-    'clf__alpha': 10.0**-np.linspace(6.8,7.2,num=5),
-    'clf__n_iter': (3500, ),
+    'vect__ngram_range': ((3,5),),  # words,bigrams,trigrams, etc.
+	'clf__loss': ("modified_huber","log"),
+    'clf__penalty': ("l1","l2"),
+    'clf__alpha': 10.0**-np.linspace(6.,8.,num=10),
+    'clf__n_iter': (100,200,400),
 }
 
 
@@ -155,24 +164,35 @@ fixed = {}
 fixed['sgd_c'] = {"shuffle": True}
 fixed['sgd_w'] = {}
 clfs = dict(sgd=(MySGDRegressor,fixed['sgd_w'],grid["sgd_w"]),
-            sgd_char=(MySGDRegressor,fixed['sgd_c'],grid["sgd_c"]))
+            sgd_char=(MySGDClassifier,fixed['sgd_c'],grid["sgd_c"]))
 
-
+# v = pandas.read_table('embeddings-scaled.EMBEDDING_SIZE=50.txt',sep=' ',header=None,index_col='X.1')
 
 
 clfc,clfix,clfp = clfs["sgd_char"]
 
 
-print clfc,clfix,clfp
+# print clfc,clfix,clfp
+
+
+
+
 
 pipeline1 = pipeline.Pipeline([
-		    		('vect', feature_extraction.text.CountVectorizer(lowercase=True,max_n=2)),
-		    		('tfidf', feature_extraction.text.TfidfTransformer()),
-		    		('clf',clfc(**clfix)),
+		    		('vect', feature_extraction.text.CountVectorizer(
+		    				lowercase=False,
+		    				analyzer='char',
+		    				ngram_range=(1,5),
+		    				)
+		    		),
+		    		('tfidf', feature_extraction.text.TfidfTransformer(sublinear_tf=True,norm="l2")),
+		    		('clf',linear_model.RidgeCV(score_func=ml_metrics.auc)),
 			])
 
 clf =  grid_search.GridSearchCV(pipeline1, clfp, n_jobs=2,score_func=ml_metrics.auc,verbose=3)  
 
+
+clf = pipeline1
 
 def training():
 			
@@ -181,19 +201,12 @@ def training():
 	kf = cross_validation.KFold(len(train),5,indices=False)
 	for i,(train_i,test_i) in enumerate(kf):
 		ftrain = train[train_i]
-		if self_train:
-				# when we self_train, crucial to shuffle before cross-validation
-				logging.info('original training %r',ftrain.shape)
-				ftrain = pandas.concat([ftrain,best],ignore_index=True)
-				ftrain['Temp'] = random.shuffle(range(ftrain.shape[0]))
-				ftrain = ftrain.sort('Temp')
-				del ftrain['Temp']
-				logging.info('new training %r',ftrain.shape)
 		logging.info('fold %d' % i)
 		clf.fit(ftrain.Comment,ftrain.Insult)
-		best_parameters = clf.best_estimator_.get_params()
-		for param_name in sorted(clfp.keys()):
-			logging.info("\t%d %s: %r" % (i,param_name, best_parameters[param_name]))
+		# print i,clf.steps[2][1].cv_values_
+		# best_parameters = clf.best_estimator_.get_params()
+		# for param_name in sorted(clfp.keys()):
+		#	logging.info("\t%d %s: %r" % (i,param_name, best_parameters[param_name]))
 		ypred = clf.predict(ftrain.Comment) 
 		logging.info("%d train=%f" % (i, ml_metrics.auc(np.array(ftrain.Insult),ypred)))
 		ypred = clf.predict(train[test_i].Comment)
@@ -207,40 +220,10 @@ def training():
 
 def predict():
 	logging.info("Starting leaderboard")
-	if self_train:
-		kf = cross_validation.KFold(len(best),5,indices=False)
-		predictions = []
-		for i,(train_i,test_i) in enumerate(kf):
-			fbtrain = best[train_i]
-			fbtest  = best[test_i]
-		
-			fbtrain = pandas.concat([train,fbtrain],ignore_index=True)
-			fbtrain['Temp'] = random.shuffle(range(fbtrain.shape[0]))
-			fbtrain = fbtrain.sort('Temp')
-			fbtrain['Temp']
-			logging.info('self  training %d %r' %(i,fbtrain.shape))
-				
-			clf.fit(fbtrain.Comment,fbtrain.Insult)
-			best_parameters = clf.best_estimator_.get_params()
-			for param_name in sorted(clfp.keys()):
-				logging.info("\tL %s: %r" % (param_name, best_parameters[param_name]))
-			predictions.append(pandas.Series(clf.predict(fbtest.Comment),index=fbtest.index))
-		# if I have done this right, ypred should be in correct order of predictions
-		ypred = pandas.concat(predictions)
-			
-		
-	else:
-		clf.fit(train.Comment,train.Insult)
-		best_parameters = clf.best_estimator_.get_params()
-		for param_name in sorted(clfp.keys()):
-			logging.info("\tL %s: %r" % (param_name, best_parameters[param_name]))
-		ypred = clf.predict(leaderboard.Comment)
 	
-
-
-
-
-
+	clf.fit(train.Comment,train.Insult)
+	ypred = clf.predict(leaderboard.Comment)
+	ypred = round_predictions(ypred)
 	# we create a submission...
 	submission = pandas.read_table('Data/sample_submission_null.csv',sep=',')
 	submission['Insult'] = ypred
@@ -255,7 +238,7 @@ def predict():
 				# XXX following line does not save the right model when self-training.
 				# Instead, it saves the model for fold k-1 of the cross-val.
 				# work is needed to create a model based on all folds.
-				joblib.dump(clf.best_estimator_,model_filename,compress=3)
-				logging.info("model saved to %s" % model_filename)
+				# joblib.dump(clf.best_estimator_,model_filename,compress=3)
+				# logging.info("model saved to %s" % model_filename)
 				break
 
