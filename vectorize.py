@@ -124,7 +124,23 @@ class MySGDRegressor(linear_model.SGDRegressor):
 
 
 
+class MyCountVectorizer(feature_extraction.text.CountVectorizer):
+ def _char_ngrams(self, text_document):
+        """Tokenize text_document into a sequence of character n-grams"""
+        # normalize white spaces
+        text_document = self._white_spaces.sub(u" ", text_document)
 
+        text_len = len(text_document)
+        ngrams = []
+        min_n, max_n = self.ngram_range
+        for n in xrange(min_n, min(max_n + 1, text_len + 1)):
+            for i in xrange(text_len - n + 1):
+            	ngram = text_document[i: i + n]
+                ngrams.append(ngram)
+                # add skip ngrams
+                for j in range(1,len(ngram)-1):
+                	ngrams.append(ngram[:j] + '_' + ngram[j+1:])
+        return ngrams
 
 def save_predictions(ypred,i):
     for x in itertools.count(1):
@@ -155,7 +171,7 @@ class MyPipeline(pipeline.Pipeline):
 
 
 clf = MyPipeline([
-		    		('vect', feature_extraction.text.CountVectorizer(
+		    		('vect', MyCountVectorizer(
 		    				lowercase=False,
 		    				analyzer='char',
 		    				ngram_range=(1,5),
@@ -164,8 +180,8 @@ clf = MyPipeline([
 		    		('tfidf', feature_extraction.text.TfidfTransformer(sublinear_tf=True,norm="l2")),
 					("clf",MySGDRegressor(
 		    				alpha=5e-8,
-		    				penalty='l2',
-		    				max_iter=1500,
+		    				penalty='l1',
+		    				max_iter=3000,
 		    				n_iter_per_step=50)),
 
 					])
@@ -183,7 +199,7 @@ def training():
 	
 
 	best_iters = []
-	best_iter = clf.steps[-1][-1].max_iter / 	clf.steps[-1][-1].n_iter_per_step	
+	best_iter = 0 # clf.steps[-1][-1].max_iter / 	clf.steps[-1][-1].n_iter_per_step	
 	kf = cross_validation.KFold(len(train.Insult),5,indices=False)
 	for i,(train_i,test_i) in enumerate(kf):
 		ftrain = train[train_i]
@@ -201,7 +217,7 @@ def training():
 		ys = np.array(ys)
 		
 		best_this_fold = ys.argmax()
-		best_iter = min(best_this_fold,best_iter)
+		best_iter = max(best_this_fold,best_iter)
 		best_iters.append(xs[best_this_fold])
 		
 
@@ -249,13 +265,10 @@ def training():
 
 	logging.info('Expected auc %f max_iter %d max_iters %r' % (ss/n,xs[best_iter],best_iters))
 
-	
 
 
 def predict():
 	logging.info("Starting leaderboard")
-	
-
 	clf.fit(train.Comment,train.Insult)
 	ypred = clf.predict(leaderboard.Comment)
 
