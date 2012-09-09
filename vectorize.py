@@ -16,7 +16,7 @@ Ideas
 """
 
 import pandas
-from sklearn import feature_extraction,linear_model,cross_validation,pipeline
+from sklearn import feature_extraction,linear_model,cross_validation,pipeline,svm
 import ml_metrics
 import numpy as np
 import os
@@ -26,6 +26,7 @@ from sklearn.svm import LinearSVC,SVR,l1_min_c
 import pylab as pl
 from collections import Counter
 from IPython.core.display import display
+from sklearn.grid_search import GridSearchCV
 
 
 
@@ -127,8 +128,8 @@ class MySGDRegressor(linear_model.SGDRegressor):
 class MyCountVectorizer(feature_extraction.text.CountVectorizer):
  def _char_ngrams(self, text_document):
         """Tokenize text_document into a sequence of character n-grams"""
-        # don't normalize white spaces
-        # text_document = self._white_spaces.sub(u" ", text_document)
+        # normalize white spaces
+        text_document = self._white_spaces.sub(u" ", text_document)
 
         text_len = len(text_document)
         ngrams = []
@@ -172,17 +173,23 @@ clf = MyPipeline([
 		    		('vect', MyCountVectorizer(
 		    				lowercase=False,
 		    				analyzer='char',
-		    				min_df=20,
+		    				min_df=10,
 		    				max_df=0.4,
-		    				ngram_range=(1,6),
+		    				ngram_range=(1,5),
 		    				)
 		    		),
 		    		('tfidf', feature_extraction.text.TfidfTransformer(sublinear_tf=True,norm='l2')),
+		    		('filter',linear_model.SGDRegressor(alpha=5e-6,penalty='l1',n_iter=200)),
 					("clf",MySGDRegressor(alpha=5e-8,penalty='l2',max_iter=1500,n_iter_per_step=10)),
-
 					])
 
 
+
+# Set the parameters by cross-validation
+tuned_parameters = [{'clf__kernel': ['rbf'], 'clf__gamma': [1e-3, 1e-4],'clf__C': [1, 10, 100, 1000]},
+                    {'clf___kernel': ['linear'], 'clf__C': [1, 10, 100, 1000]}]
+
+# clf = GridSearchCV(pipe, tuned_parameters, score_func=ml_metrics.auc,n_jobs=2)
 
 
 
@@ -191,8 +198,25 @@ def training():
 	"""
 	Train the model, while holding out folds
 	"""
-	
+	if isinstance(clf,MyPipeline) and isinstance(clf.steps[-1][-1],linear_model.SGDRegressor):
+		training2()
+	else:
+		training3()
 
+def training3():
+	kf = cross_validation.KFold(len(train.Insult),5,indices=False)
+	for i,(train_i,test_i) in enumerate(kf):
+		ftrain = train[train_i]
+		ftest  = train[test_i]
+		clf.fit(ftrain.Comment,ftrain.Insult)
+		ypred = clf.predict(ftrain.Comment) 
+		display(clf.steps[-1])
+		display("%d train auc=%f" % (i, ml_metrics.auc(np.array(ftrain.Insult),ypred)))
+		ypred = clf.predict(ftest.Comment)
+		display("%d test auc=%f" % (i, ml_metrics.auc(np.array(ftest.Insult),ypred)))
+
+	
+def training2():
 	best_iters = []
 	best_iter = 0 # clf.steps[-1][-1].max_iter / 	clf.steps[-1][-1].n_iter_per_step	
 	kf = cross_validation.KFold(len(train.Insult),5,indices=False)
