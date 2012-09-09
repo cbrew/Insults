@@ -167,9 +167,9 @@ clf = MyPipeline([
 		    		('vect', MyCountVectorizer(
 		    				lowercase=False,
 		    				analyzer='char',
-		    				min_df=10,
-		    				max_df=0.4,
-		    				max_features=5000, # 500 was too low, try 5000
+		    				min_df=5,
+		    				max_df=0.2,
+		    				max_features=10000, # 5000 was too low, try 10000 again
 		    				ngram_range=(1,5),
 		    				)
 		    		),
