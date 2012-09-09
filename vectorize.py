@@ -88,8 +88,8 @@ class MySGDRegressor(linear_model.SGDRegressor):
 				linear_model.SGDRegressor.fit(self,X,y)
 			# record coefs and intercept for later
 			self.stages_.append((i+self.n_iter,self.coef_.copy(),self.intercept_.copy()))
-			logging.info('done %d/%d steps' % (i+self.n_iter,self.max_iter))
-			logging.info('training set auc %f' % self.auc(X,y))
+			# logging.info('done %d/%d steps' % (i+self.n_iter,self.max_iter))
+			# logging.info('training set auc %f' % self.auc(X,y))
 	def auc(self,X,y):
 		yhat = self.predict(X)
 		return ml_metrics.auc(np.array(y),yhat)
@@ -127,8 +127,8 @@ class MySGDRegressor(linear_model.SGDRegressor):
 class MyCountVectorizer(feature_extraction.text.CountVectorizer):
  def _char_ngrams(self, text_document):
         """Tokenize text_document into a sequence of character n-grams"""
-        # normalize white spaces
-        text_document = self._white_spaces.sub(u" ", text_document)
+        # don't normalize white spaces
+        # text_document = self._white_spaces.sub(u" ", text_document)
 
         text_len = len(text_document)
         ngrams = []
@@ -137,9 +137,7 @@ class MyCountVectorizer(feature_extraction.text.CountVectorizer):
             for i in xrange(text_len - n + 1):
             	ngram = text_document[i: i + n]
                 ngrams.append(ngram)
-                # add skip ngrams
-                for j in range(1,len(ngram)-1):
-                	ngrams.append(ngram[:j] + '_' + ngram[j+1:])
+
         return ngrams
 
 def save_predictions(ypred,i):
@@ -174,15 +172,13 @@ clf = MyPipeline([
 		    		('vect', MyCountVectorizer(
 		    				lowercase=False,
 		    				analyzer='char',
-		    				ngram_range=(1,5),
+		    				min_df=20,
+		    				max_df=0.4,
+		    				ngram_range=(1,6),
 		    				)
 		    		),
-		    		('tfidf', feature_extraction.text.TfidfTransformer(sublinear_tf=True,norm="l2")),
-					("clf",MySGDRegressor(
-		    				alpha=5e-8,
-		    				penalty='l1',
-		    				max_iter=3000,
-		    				n_iter_per_step=50)),
+		    		('tfidf', feature_extraction.text.TfidfTransformer(sublinear_tf=True,norm='l2')),
+					("clf",MySGDRegressor(alpha=5e-8,penalty='l2',max_iter=1500,n_iter_per_step=10)),
 
 					])
 
@@ -193,8 +189,7 @@ clf = MyPipeline([
 
 def training():
 	"""
-	The model is refitted in the predict stage. The purpose of this code is to choose
-	a nice set of parameters.
+	Train the model, while holding out folds
 	"""
 	
 
@@ -220,28 +215,31 @@ def training():
 		best_iter = max(best_this_fold,best_iter)
 		best_iters.append(xs[best_this_fold])
 		
-
 		display(clf.steps[-1][-1])
-		pl.title("Fold %d chosen %d %0.5f this fold: %d %0.5f" % (
+
+
+		if isinstance(clf.steps[-1][-1],linear_model.SGDRegressor):
+			pl.title("Fold %d chosen %d %0.5f this fold: %d %0.5f" % (
 																	i,
 																	xs[best_iter],ys[best_iter],
 																	xs[best_this_fold],ys[best_this_fold],
 																))
 																	
-		pl.plot(xs,ys)
-		xs,ys = zip(*clf.staged_auc(ftrain.Comment,ftrain.Insult))
-		pl.plot(xs,ys)
-		pl.xlabel('Number of iterations')
-		pl.ylabel('AUC')
-		pl.grid(True)
-		pl.show()
+			pl.plot(xs,ys)
+			xs,ys = zip(*clf.staged_auc(ftrain.Comment,ftrain.Insult))
+			pl.plot(xs,ys)
+			pl.xlabel('Number of iterations')
+			pl.ylabel('AUC')
+			pl.grid(True)
+			pl.show()
 	
 	
 
 
 
 	# tell the inner classifier how many steps would be best...
-	clf.steps[-1][-1].max_iter = xs[best_iter]
+	best_iters = sorted(best_iters)
+	clf.steps[-1][-1].max_iter =  best_iters[len(best_iters) / 2]
 	clf.steps[-1][-1].reset_args()
 
 	# work out what the score we expect is...
