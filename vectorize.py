@@ -6,7 +6,7 @@ Ideas
 -----
 
 - use character n-grams because they are robust and simple.
-- use multiple good classifiers and average them.
+- tune SGD carefully.
  
 
 
@@ -22,7 +22,6 @@ import numpy as np
 import os
 import itertools
 import logging
-from sklearn.svm import LinearSVC,SVR,l1_min_c
 import pylab as pl
 from collections import Counter
 from IPython.core.display import display
@@ -175,21 +174,18 @@ clf = MyPipeline([
 		    				analyzer='char',
 		    				min_df=10,
 		    				max_df=0.4,
+		    				max_features=15000,
 		    				ngram_range=(1,5),
 		    				)
 		    		),
 		    		('tfidf', feature_extraction.text.TfidfTransformer(sublinear_tf=True,norm='l2')),
-		    		('filter',linear_model.SGDRegressor(alpha=5e-6,penalty='l1',n_iter=200)),
-					("clf",MySGDRegressor(alpha=5e-8,penalty='l2',max_iter=1500,n_iter_per_step=10)),
+		    		# first SGD is for sparsity, will be tuned with alpha as large as possible...
+		    		('filter',linear_model.SGDRegressor(alpha=3e-5,penalty='l1',n_iter=100)),
+		    		# second SGD is for feature weighting...
+					("clf",MySGDRegressor(alpha=5e-8,penalty='l2',max_iter=800,n_iter_per_step=10)),
 					])
 
 
-
-# Set the parameters by cross-validation
-tuned_parameters = [{'clf__kernel': ['rbf'], 'clf__gamma': [1e-3, 1e-4],'clf__C': [1, 10, 100, 1000]},
-                    {'clf___kernel': ['linear'], 'clf__C': [1, 10, 100, 1000]}]
-
-# clf = GridSearchCV(pipe, tuned_parameters, score_func=ml_metrics.auc,n_jobs=2)
 
 
 
@@ -275,7 +271,7 @@ def training2():
 		clf.fit(ftrain.Comment,ftrain.Insult)
 		ypred = clf.predict(train[test_i].Comment)
 		est = ml_metrics.auc(np.array(train[test_i].Insult),ypred)
-		logging.info("%d test auc %d iter %f" % (i,clf.steps[-1][-1].max_iter,est))
+		logging.info("%d %d iter test auc %f" % (i,clf.steps[-1][-1].max_iter,est))
 		ss += est
 		n  += 1
 
@@ -285,7 +281,7 @@ def training2():
 	# overfitting is our expected problem, but not tested...
 
 
-	logging.info('Expected auc %f max_iter %d max_iters %r' % (ss/n,xs[best_iter],best_iters))
+	logging.info('Expected auc %f max_iter %d max_iters %r' % (ss/n,best_iters[len(best_iters) / 2],best_iters))
 
 
 
