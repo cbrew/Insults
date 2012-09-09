@@ -168,8 +168,7 @@ clf = MyPipeline([
 		    				lowercase=False,
 		    				analyzer='char',
 		    				min_df=10,
-		    				max_df=0.5,
-		    				max_features=10000, # 5000 was too low, try 10000 again
+		    				max_features=15000, # 5000 was too low, try 10000 again
 		    				ngram_range=(1,5),
 		    				)
 		    		),
