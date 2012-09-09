@@ -169,7 +169,7 @@ clf = MyPipeline([
 		    				analyzer='char',
 		    				min_df=10,
 		    				max_df=0.4,
-		    				max_features=500, # try a much lower number...best we had was 10,000
+		    				max_features=5000, # 500 was too low, try 5000
 		    				ngram_range=(1,5),
 		    				)
 		    		),
