@@ -167,14 +167,15 @@ clf = MyPipeline([
 		    		('vect', MyCountVectorizer(
 		    				lowercase=False,
 		    				analyzer='char',
-		    				min_df=10,
+		    				min_df=5,
+		    				max_df=0.3,
 		    				max_features=10000, # 5000 was too low, try 10000 again
 		    				ngram_range=(1,5),
 		    				)
 		    		),
 		    		('tfidf', feature_extraction.text.TfidfTransformer(sublinear_tf=True,norm='l2')),
 		    		# first SGD is for sparsity, will be tuned with alpha as large as possible...
-		    		('filter',linear_model.SGDRegressor(alpha=3e-5,penalty='l1',n_iter=100)),
+		    		('filter',linear_model.SGDRegressor(alpha=1e-5,penalty='l1',n_iter=100)),
 		    		# second SGD is for feature weighting...
 					("clf",MySGDRegressor(alpha=5e-8,penalty='l2',max_iter=800,n_iter_per_step=10)),
 					])
