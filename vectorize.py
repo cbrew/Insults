@@ -7,9 +7,6 @@ Ideas
 
 - use character n-grams because they are robust and simple.
 - tune SGD carefully.
- 
-
-
 
 
 
@@ -23,9 +20,7 @@ import os
 import itertools
 import logging
 import pylab as pl
-from collections import Counter
 from IPython.core.display import display
-from sklearn.grid_search import GridSearchCV
 
 
 
@@ -174,7 +169,7 @@ clf = MyPipeline([
 		    				analyzer='char',
 		    				min_df=10,
 		    				max_df=0.4,
-		    				max_features=15000,
+		    				max_features=500, # try a much lower number...best we had was 10,000
 		    				ngram_range=(1,5),
 		    				)
 		    		),
