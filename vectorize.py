@@ -167,17 +167,20 @@ clf = MyPipeline([
 		    		('vect', MyCountVectorizer(
 		    				lowercase=False,
 		    				analyzer='char',
-		    				min_df=5,
-		    				max_df=0.3,
-		    				max_features=10000, # 5000 was too low, try 10000 again
+		    				# min_df=10,
+		    				# max_df=0.4,
+		    				# max_features=10000,
 		    				ngram_range=(1,5),
 		    				)
 		    		),
 		    		('tfidf', feature_extraction.text.TfidfTransformer(sublinear_tf=True,norm='l2')),
 		    		# first SGD is for sparsity, will be tuned with alpha as large as possible...
-		    		('filter',linear_model.SGDRegressor(alpha=1e-5,penalty='l1',n_iter=100)),
+		    		# ('filter',linear_model.SGDRegressor(alpha=1e-5,penalty='l1',n_iter=100)),
 		    		# second SGD is for feature weighting...
-					("clf",MySGDRegressor(alpha=5e-8,penalty='l2',max_iter=800,n_iter_per_step=10)),
+					("clf",MySGDRegressor(alpha=3e-7,
+											penalty='l1',
+											max_iter=1500,
+											n_iter_per_step=10)),
 					])
 
 
@@ -210,7 +213,7 @@ def training3():
 def training2():
 	best_iters = []
 	best_iter = 0 # clf.steps[-1][-1].max_iter / 	clf.steps[-1][-1].n_iter_per_step	
-	kf = cross_validation.KFold(len(train.Insult),5,indices=False)
+	kf = cross_validation.KFold(len(train.Insult),15,indices=False)
 	for i,(train_i,test_i) in enumerate(kf):
 		ftrain = train[train_i]
 		logging.info('fold %d' % i)
