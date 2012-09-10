@@ -21,7 +21,9 @@ import itertools
 import logging
 import pylab as pl
 from IPython.core.display import display
+import sys
 
+import json
 
 
 
@@ -163,6 +165,10 @@ class MyPipeline(pipeline.Pipeline):
 		return self.steps[-1][-1].staged_auc(Xt,y)
 
 
+
+
+
+
 clf = MyPipeline([
 		    		('vect', MyCountVectorizer(
 		    				lowercase=False,
@@ -175,12 +181,12 @@ clf = MyPipeline([
 		    		),
 		    		('tfidf', feature_extraction.text.TfidfTransformer(sublinear_tf=True,norm='l2')),
 		    		# first SGD is for sparsity, will be tuned with alpha as large as possible...
-		    		# ('filter',linear_model.SGDRegressor(alpha=1e-5,penalty='l1',n_iter=100)),
+		    		('filter',linear_model.SGDRegressor(alpha=1e-5,penalty='l1',n_iter=100)),
 		    		# second SGD is for feature weighting...
-					("clf",MySGDRegressor(alpha=3e-7,
+					("clf",MySGDRegressor(alpha=5e-7,
 											penalty='l1',
-											max_iter=1500,
-											n_iter_per_step=10)),
+											max_iter=800,
+											n_iter_per_step=10))
 					])
 
 
