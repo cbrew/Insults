@@ -181,9 +181,9 @@ clf = MyPipeline([
 		    		),
 		    		('tfidf', feature_extraction.text.TfidfTransformer(sublinear_tf=True,norm='l2')),
 		    		# first SGD is for sparsity, will be tuned with alpha as large as possible...
-		    		('filter',linear_model.SGDRegressor(alpha=1e-5,penalty='l1',n_iter=100)),
+		    		# ('filter',linear_model.SGDRegressor(alpha=1e-5,penalty='l1',n_iter=100)),
 		    		# second SGD is for feature weighting...
-					("clf",MySGDRegressor(alpha=5e-7,
+					("clf",MySGDRegressor(alpha=3e-7,
 											penalty='l1',
 											max_iter=800,
 											n_iter_per_step=10))
@@ -217,6 +217,10 @@ def training3():
 
 	
 def training2():
+	"""
+	This does the selection of a number of iterations by choosing the median of the optima 
+	for each fold, which is unlikely to be the perfect best answer.
+	"""
 	best_iters = []
 	best_iter = 0 # clf.steps[-1][-1].max_iter / 	clf.steps[-1][-1].n_iter_per_step	
 	kf = cross_validation.KFold(len(train.Insult),15,indices=False)
@@ -280,11 +284,7 @@ def training2():
 		n  += 1
 
 
-	# optimal choice of iteration number not guaranteed, because it is a
-	# mimimum over folds. Minimizing seems a sensible thing, because
-	# overfitting is our expected problem, but not tested...
-
-
+	# choose median length of training.
 	logging.info('Expected auc %f max_iter %d max_iters %r' % (ss/n,best_iters[len(best_iters) / 2],best_iters))
 
 
