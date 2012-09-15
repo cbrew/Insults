@@ -1,9 +1,24 @@
 """
-Code for the insults competition run by Kaggle in August 2012.
+Code for the insults competition run by Kaggle for Impermium in August-September 2012.
 
+Prerequisites
+-------------
+
+Python 2.7.3 + scikit-learn 0.13-git + ml_metrics 0.1.1 + pandas 0.8.1 (+ matplotlib 1.2.x for plotting, but not needed to predict)
+(all have licenses that permit commercial use)
+I ran on a four year old iMac with 4Gb of memory and dual core Intel processor.
 
 Usage
 -----
+python insults.py  (does training on train.csv, testing on test.csv, output a numbered file in ./Submissions/submissionXX.csv
+python insults.py --train Data/fulltrain.csv --predictions cbrew.csv  (trains on fulltrain.csv, tests on test.csv, results
+in cbrew.csv. These results are much too good, because the training and test sets overlap )
+
+
+requires the datafiles in ./Data
+
+writes information into Folds which is used to train the final model.
+generates an extensive log file in (by default) 'insults.log'
 
 Ideas
 -----
@@ -11,28 +26,65 @@ Ideas
 - use character n-grams because they are robust and simple.
 - tune SGD carefully.
 
-
+Issues
+------
+clumsy to overwrite the fold data each time we tune. 
 
 """
 
 import pandas
-from sklearn import feature_extraction,linear_model,cross_validation,pipeline,svm
+from sklearn import feature_extraction,linear_model,cross_validation,pipeline
 import ml_metrics
 import numpy as np
 import os
 import itertools
 import logging
+import pylab as pl
+import argparse
+import sys
+import score
 
 
 
-def initialize():
+def make_full_training():
+	df1 = pandas.read_table('Data/train.csv',sep=',')
+	df2 = pandas.read_table('Data/test_with_solutions.csv',sep=',')
+	df = pandas.concat([df1,df2])
+	df.to_csv('Data/fulltrain.csv',index=False)
+
+
+def initialize(args):
 	"""
 	Set everything up.
 	"""
-	logging.basicConfig(filename="vectorize.log",mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-	train = pandas.read_table('Data/train.csv',sep=',')
-	leaderboard = pandas.read_table('Data/test.csv',sep=',')
-	return train,leaderboard
+	logging.basicConfig(filename=args.logfile,mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+	train = pandas.read_table(args.trainfile,sep=',')
+	leaderboard = pandas.read_table(args.testfile,sep=',')
+	clf = MyPipeline([
+		    		('vect', feature_extraction.text.CountVectorizer(
+		    				lowercase=False,
+		    				analyzer='char',
+		    				ngram_range=(1,5),
+		    				)
+		    		),
+		    		('tfidf', feature_extraction.text.TfidfTransformer(sublinear_tf=True,norm='l2')),
+		    		# first SGD is for sparsity, will be tuned with alpha as large as possible...
+		    		# currently not used...
+		    		# ('filter',linear_model.SGDRegressor(alpha=1e-5,penalty='l1',n_iter=200)),
+		    		# second SGD is for feature weighting...
+					("clf",MySGDRegressor(	alpha=args.sgd_alpha, 
+											penalty='elasticnet',
+											learning_rate='constant',
+											eta0=0.005,
+											rho=0.90, 
+											max_iter=1600, 
+											n_iter_per_step=10))
+					])
+
+
+
+
+	return train,leaderboard,clf
 
 def scale_predictions(ypred):
 	"""
@@ -67,8 +119,6 @@ class MySGDRegressor(linear_model.SGDRegressor):
 		assert self.max_iter % self.n_iter_per_step == 0
 		linear_model.SGDRegressor.__init__(self,
 											alpha=self.alpha,
-											learning_rate='constant',
-											eta0=1e-3,
 											penalty=self.penalty,
 											n_iter=self.n_iter_per_step,
 											**self.kwargs)
@@ -124,34 +174,6 @@ class MySGDRegressor(linear_model.SGDRegressor):
 
 
 
-
-class MyCountVectorizer(feature_extraction.text.CountVectorizer):
- def _char_ngrams(self, text_document):
-        """Tokenize text_document into a sequence of character n-grams"""
-        # normalize white spaces
-        text_document = self._white_spaces.sub(u" ", text_document)
-
-        text_len = len(text_document)
-        ngrams = []
-        min_n, max_n = self.ngram_range
-        for n in xrange(min_n, min(max_n + 1, text_len + 1)):
-            for i in xrange(text_len - n + 1):
-            	ngram = text_document[i: i + n]
-                ngrams.append(ngram)
-
-        return ngrams
-
-
-
-
-
-
-
-
-
-
-
-
 class MyPipeline(pipeline.Pipeline):
 	def staged_auc(self,X,y):
 		"""
@@ -168,28 +190,25 @@ class MyPipeline(pipeline.Pipeline):
 
 
 
-clf = MyPipeline([
-		    		('vect', feature_extraction.text.CountVectorizer(
-		    				lowercase=False,
-		    				analyzer='char',
-		    				ngram_range=(1,5),
-		    				)
-		    		),
-		    		('tfidf', feature_extraction.text.TfidfTransformer(sublinear_tf=True,norm='l2')),
-		    		# first SGD is for sparsity, will be tuned with alpha as large as possible...
-		    		# ('filter',linear_model.SGDRegressor(alpha=1e-5,penalty='l1',n_iter=200)),
-		    		# second SGD is for feature weighting...
-					("clf",MySGDRegressor(alpha=4e-7, penalty='l1', max_iter=1600, n_iter_per_step=10))
-					])
 
+
+
+
+def clear_fold_info():
+	for fn in os.listdir('Folds'):
+		os.unlink(os.path.join('Folds',fn))
 
 
 def save_fold_info(i,xs,ys):
+	"""
+	The fold information is stored in a simple format. These predictions are based on several 
+	folds of cross-validation over the training set. 
+	"""
 	df = pandas.DataFrame({'iterations':xs,
 							('auc%d' % i):ys})
 	df.to_csv('Folds/fold%d.csv' %i,index=False)
 
-def choose_n_iterations():
+def choose_n_iterations(show=False):
 	df = None
 	for fn in os.listdir('Folds'):
 		fold = pandas.read_table(os.path.join('Folds',fn),sep=',',index_col='iterations')
@@ -200,21 +219,26 @@ def choose_n_iterations():
 			df = fold
 
 	fi = df.mean(axis=1)
+	if show:
+		pl.plot(fi.index,np.array(fi))
+		pl.show()
 	chosen = fi.index[fi.argmax()]
 	logging.info("chose %d iterations, projected score %f" % (chosen,fi.max()))
 	return chosen
 
-NFOLDS=10
+NFOLDS=15
 
-def training():
+def tuning(clf):
 	"""
 	Train the model, while holding out folds for use in
 	estimating performance.
 
 	"""
+	logging.info("Tuning")
 	best_iters = []
 	best_iter = 0 # clf.steps[-1][-1].max_iter / 	clf.steps[-1][-1].n_iter_per_step	
 	kf = cross_validation.KFold(len(train.Insult),NFOLDS,indices=False)
+	clear_fold_info()
 	for i,(train_i,test_i) in enumerate(kf):
 		ftrain = train[train_i]
 		logging.info('fold %d' % i)
@@ -222,22 +246,21 @@ def training():
 		ypred = clf.predict(ftrain.Comment) 
 		logging.info("%d train auc=%f" % (i, ml_metrics.auc(np.array(ftrain.Insult),ypred)))
 		ypred = clf.predict(train[test_i].Comment)
-
-		# the policy is that we are going to select the number of iterations for the
-		# predict stage by examining the curve for the training folds.
-
+		# record information about the auc at each stage of training.
 		xs,ys = clf.staged_auc(train[test_i].Comment,train[test_i].Insult)
 		xs = np.array(xs)
-		ys = np.array(ys)
-		
+		ys = np.array(ys)		
 		save_fold_info(i,xs,ys)
 		logging.info("saved info for fold %d" % i)
-	logging.info('training complete')
+	logging.info('tuning complete')
 
 	
 
-def predict():
-	logging.info("Starting leaderboard")
+def predict(args,clf):
+	"""
+	Train on training file, predict on test file. 
+	"""
+	logging.info("Starting predictions")
 	# work out how long to train for final step.
 	clf.steps[-1][-1].max_iter = choose_n_iterations()
 	clf.steps[-1][-1].reset_args()
@@ -247,7 +270,9 @@ def predict():
 	# we create a submission...
 	submission = pandas.read_table('Data/sample_submission_null.csv',sep=',')
 	submission['Insult'] = ypred
-	for x in itertools.count(1):
+
+	if args.predictions == None:
+		for x in itertools.count(1):
 			filename = "submissions/submission%d.csv" % x
 			if os.path.exists(filename):
 				next
@@ -255,10 +280,28 @@ def predict():
 				submission.to_csv(filename,index=False)
 				logging.info('Saved %s' % filename)
 				break
+	else:
+			submission.to_csv(args.predictions,index=False)
+			logging.info('Saved %s' % args.predictions)
+	logging.info("Finished predictions")
 
 if __name__ == "__main__":
-	train,leaderboard = initialize()
-	training()
-	predict()
+	parser = argparse.ArgumentParser(description="Generate a prediction about insults")
+	parser.add_argument('--trainfile','-T',default='Data/train.csv',help='file to train classifier on')
+	parser.add_argument('--testfile','-t',default='Data/test.csv',help='file to generate predictions for')	
+	parser.add_argument('--predictions','-p',default=None,help='destination for predictions (or None for default location)')
+	parser.add_argument('--logfile','-l',default='insults.log',help='name of logfile')	
+	parser.add_argument('--tune','-tu',action='store_true',help='if set, causes tuning step to occur')
+	parser.add_argument('--sgd_alpha','-sa',type=float,default=3e-7)
+	parser.add_argument('--sgd_eta0','-se',type=float,default=0.005)
+	parser.add_argument('--sgd_rho','-sr',type=float,default=0.85)
+	args = parser.parse_args()
+	print args.sgd_alpha
+	train,leaderboard,clf = initialize(args)
+	print clf
+	if args.tune:
+		tuning(clf)
+	predict(args,clf)
+	score.score()
 
 
