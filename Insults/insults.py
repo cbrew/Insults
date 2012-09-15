@@ -179,7 +179,7 @@ clf = MyPipeline([
 		    		# first SGD is for sparsity, will be tuned with alpha as large as possible...
 		    		# ('filter',linear_model.SGDRegressor(alpha=1e-5,penalty='l1',n_iter=200)),
 		    		# second SGD is for feature weighting...
-					("clf",MySGDRegressor(alpha=6e-7, penalty='l1', max_iter=1600, n_iter_per_step=10))
+					("clf",MySGDRegressor(alpha=4e-7, penalty='l1', max_iter=1600, n_iter_per_step=10))
 					])
 
 
@@ -200,8 +200,11 @@ def choose_n_iterations():
 			df = fold
 
 	fi = df.mean(axis=1)
+	chosen = fi.index[fi.argmax()]
+	logging.info("chose %d iterations, projected score %f" % (chosen,fi.max()))
+	return chosen
 
-	return fi.index[fi.argmax()]
+NFOLDS=10
 
 def training():
 	"""
@@ -211,7 +214,7 @@ def training():
 	"""
 	best_iters = []
 	best_iter = 0 # clf.steps[-1][-1].max_iter / 	clf.steps[-1][-1].n_iter_per_step	
-	kf = cross_validation.KFold(len(train.Insult),15,indices=False)
+	kf = cross_validation.KFold(len(train.Insult),NFOLDS,indices=False)
 	for i,(train_i,test_i) in enumerate(kf):
 		ftrain = train[train_i]
 		logging.info('fold %d' % i)
