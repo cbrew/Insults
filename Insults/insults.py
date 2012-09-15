@@ -179,7 +179,7 @@ clf = MyPipeline([
 		    		# first SGD is for sparsity, will be tuned with alpha as large as possible...
 		    		# ('filter',linear_model.SGDRegressor(alpha=1e-5,penalty='l1',n_iter=200)),
 		    		# second SGD is for feature weighting...
-					("clf",MySGDRegressor(alpha=4e-7, penalty='l1', max_iter=1600, n_iter_per_step=10))
+					("clf",MySGDRegressor(alpha=6e-7, penalty='l1', max_iter=1600, n_iter_per_step=10))
 					])
 
 
