@@ -2,6 +2,9 @@
 Code for the insults competition run by Kaggle in August 2012.
 
 
+Usage
+-----
+
 Ideas
 -----
 
@@ -19,11 +22,6 @@ import numpy as np
 import os
 import itertools
 import logging
-import pylab as pl
-from IPython.core.display import display
-import sys
-
-import json
 
 
 
@@ -69,6 +67,8 @@ class MySGDRegressor(linear_model.SGDRegressor):
 		assert self.max_iter % self.n_iter_per_step == 0
 		linear_model.SGDRegressor.__init__(self,
 											alpha=self.alpha,
+											learning_rate='constant',
+											eta0=1e-3,
 											penalty=self.penalty,
 											n_iter=self.n_iter_per_step,
 											**self.kwargs)
@@ -85,8 +85,8 @@ class MySGDRegressor(linear_model.SGDRegressor):
 				linear_model.SGDRegressor.fit(self,X,y)
 			# record coefs and intercept for later
 			self.stages_.append((i+self.n_iter,self.coef_.copy(),self.intercept_.copy()))
-			# logging.info('done %d/%d steps' % (i+self.n_iter,self.max_iter))
-			# logging.info('training set auc %f' % self.auc(X,y))
+			logging.info('done %d/%d steps' % (i+self.n_iter,self.max_iter))
+			logging.info('training set auc %f' % self.auc(X,y))
 	def auc(self,X,y):
 		yhat = self.predict(X)
 		return ml_metrics.auc(np.array(y),yhat)
@@ -100,10 +100,14 @@ class MySGDRegressor(linear_model.SGDRegressor):
 	def staged_auc(self,X,y):
 		"""
 		calculate the AUC after each of the stages.
+
+		returns: ns   -- list of iteration numbers
+		         aucs -- list of corresponding areas under the curve.
 		"""
 		y = np.array(y)
-		return [ (n, ml_metrics.auc(y,p)) for n,p in self.staged_predict(X)]
+		results = [ (n, ml_metrics.auc(y,p)) for n,p in self.staged_predict(X)]
 
+		return zip(*results) # Python idiom unzips list into two parallel ones.
 		
 	def predict(self,X,coef=None,intercept=None):
 		"""
@@ -137,14 +141,7 @@ class MyCountVectorizer(feature_extraction.text.CountVectorizer):
 
         return ngrams
 
-def save_predictions(ypred,i):
-    for x in itertools.count(1):
-        filename = "%s_fold_%d_%d"   % (clf_name,i,x)
-        if os.path.exists(filename):
-            next
-        else:			
-            np.save(filename,ypred)
-            break
+
 
 
 
@@ -158,6 +155,8 @@ def save_predictions(ypred,i):
 class MyPipeline(pipeline.Pipeline):
 	def staged_auc(self,X,y):
 		"""
+		MyPipeline knows about staged_auc, which 
+		MySGDRegressor implements and uses.
 		"""
 		Xt = X
 		for name, transform in self.steps[:-1]:
@@ -170,56 +169,45 @@ class MyPipeline(pipeline.Pipeline):
 
 
 clf = MyPipeline([
-		    		('vect', MyCountVectorizer(
+		    		('vect', feature_extraction.text.CountVectorizer(
 		    				lowercase=False,
 		    				analyzer='char',
-		    				# min_df=10,
-		    				# max_df=0.4,
-		    				# max_features=10000,
 		    				ngram_range=(1,5),
 		    				)
 		    		),
 		    		('tfidf', feature_extraction.text.TfidfTransformer(sublinear_tf=True,norm='l2')),
 		    		# first SGD is for sparsity, will be tuned with alpha as large as possible...
-		    		# ('filter',linear_model.SGDRegressor(alpha=1e-5,penalty='l1',n_iter=100)),
+		    		# ('filter',linear_model.SGDRegressor(alpha=1e-5,penalty='l1',n_iter=200)),
 		    		# second SGD is for feature weighting...
-					("clf",MySGDRegressor(alpha=3e-7,
-											penalty='l1',
-											max_iter=800,
-											n_iter_per_step=10))
+					("clf",MySGDRegressor(alpha=4e-7, penalty='l1', max_iter=1600, n_iter_per_step=10))
 					])
 
 
 
+def save_fold_info(i,xs,ys):
+	df = pandas.DataFrame({'iterations':xs,
+							('auc%d' % i):ys})
+	df.to_csv('Folds/fold%d.csv' %i,index=False)
 
+def choose_n_iterations():
+	df = None
+	for fn in os.listdir('Folds'):
+		fold = pandas.read_table(os.path.join('Folds',fn),sep=',',index_col='iterations')
+		if isinstance(df,pandas.DataFrame):
+			df = df.join(fold)
+			
+		else:
+			df = fold
 
+	fi = df.mean(axis=1)
+
+	return fi.index[fi.argmax()]
 
 def training():
 	"""
-	Train the model, while holding out folds
-	"""
-	if isinstance(clf,MyPipeline) and isinstance(clf.steps[-1][-1],linear_model.SGDRegressor):
-		training2()
-	else:
-		training3()
+	Train the model, while holding out folds for use in
+	estimating performance.
 
-def training3():
-	kf = cross_validation.KFold(len(train.Insult),5,indices=False)
-	for i,(train_i,test_i) in enumerate(kf):
-		ftrain = train[train_i]
-		ftest  = train[test_i]
-		clf.fit(ftrain.Comment,ftrain.Insult)
-		ypred = clf.predict(ftrain.Comment) 
-		display(clf.steps[-1])
-		display("%d train auc=%f" % (i, ml_metrics.auc(np.array(ftrain.Insult),ypred)))
-		ypred = clf.predict(ftest.Comment)
-		display("%d test auc=%f" % (i, ml_metrics.auc(np.array(ftest.Insult),ypred)))
-
-	
-def training2():
-	"""
-	This does the selection of a number of iterations by choosing the median of the optima 
-	for each fold, which is unlikely to be the perfect best answer.
 	"""
 	best_iters = []
 	best_iter = 0 # clf.steps[-1][-1].max_iter / 	clf.steps[-1][-1].n_iter_per_step	
@@ -235,62 +223,21 @@ def training2():
 		# the policy is that we are going to select the number of iterations for the
 		# predict stage by examining the curve for the training folds.
 
-		xs,ys = zip(*clf.staged_auc(train[test_i].Comment,train[test_i].Insult))
+		xs,ys = clf.staged_auc(train[test_i].Comment,train[test_i].Insult)
 		xs = np.array(xs)
 		ys = np.array(ys)
 		
-		best_this_fold = ys.argmax()
-		best_iter = max(best_this_fold,best_iter)
-		best_iters.append(xs[best_this_fold])
-		
-		display(clf.steps[-1][-1])
+		save_fold_info(i,xs,ys)
+		logging.info("saved info for fold %d" % i)
+	logging.info('training complete')
 
-
-		if isinstance(clf.steps[-1][-1],linear_model.SGDRegressor):
-			pl.title("Fold %d chosen %d %0.5f this fold: %d %0.5f" % (
-																	i,
-																	xs[best_iter],ys[best_iter],
-																	xs[best_this_fold],ys[best_this_fold],
-																))
-																	
-			pl.plot(xs,ys)
-			xs,ys = zip(*clf.staged_auc(ftrain.Comment,ftrain.Insult))
-			pl.plot(xs,ys)
-			pl.xlabel('Number of iterations')
-			pl.ylabel('AUC')
-			pl.grid(True)
-			pl.show()
 	
-	
-
-
-
-	# tell the inner classifier how many steps would be best...
-	best_iters = sorted(best_iters)
-	clf.steps[-1][-1].max_iter =  best_iters[len(best_iters) / 2]
-	clf.steps[-1][-1].reset_args()
-
-	# work out what the score we expect is...
-	ss = 0
-	n = 0
-	for i,(train_i,test_i) in enumerate(kf):
-		ftrain = train[train_i]
-		logging.info('fold %d' % i)
-		clf.fit(ftrain.Comment,ftrain.Insult)
-		ypred = clf.predict(train[test_i].Comment)
-		est = ml_metrics.auc(np.array(train[test_i].Insult),ypred)
-		logging.info("%d %d iter test auc %f" % (i,clf.steps[-1][-1].max_iter,est))
-		ss += est
-		n  += 1
-
-
-	# choose median length of training.
-	logging.info('Expected auc %f max_iter %d max_iters %r' % (ss/n,best_iters[len(best_iters) / 2],best_iters))
-
-
 
 def predict():
 	logging.info("Starting leaderboard")
+	# work out how long to train for final step.
+	clf.steps[-1][-1].max_iter = choose_n_iterations()
+	clf.steps[-1][-1].reset_args()
 	clf.fit(train.Comment,train.Insult)
 	ypred = clf.predict(leaderboard.Comment)
 
