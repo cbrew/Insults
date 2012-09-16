@@ -421,16 +421,22 @@ if __name__ == "__main__":
 
 	parser.add_argument('--competition','-c',action='store_true',help='make predictions for the final stage of the competition')
 	parser.add_argument('--no_score','-ns',action='store_true',help='turn off print out of score at end' )
-	args = parser.parse_args()
-	
 
-	if args.competition:
-		logging.basicConfig(filename=DataFile('Logs','final.log'),mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-		for argset in competition_argsets:
-			run_prediction(parser=parser,args_in=argset,competition=True)
-	else:
-		logging.basicConfig(filename=args.logfile,mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-		run_prediction(parser=parser,args_in=args,competition=False)
+
+	# this code is designed to play nice with Sumatra, which likes a single argument on command line
+	# pointing to a config file. So we make a config file containing command lines that we might otherwise 
+	# have typed.
+	param_file = sys.argv[1]
+	with open(param_file) as inf:
+		for line in param_file:
+			args = parser.parse_args(line.split())
+			if args.competition:
+				logging.basicConfig(filename=DataFile('Logs','final.log'),mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+				for argset in competition_argsets:
+					run_prediction(parser=parser,args_in=argset,competition=True)
+			else:
+				logging.basicConfig(filename=args.logfile,mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+				run_prediction(parser=parser,args_in=args,competition=False)
 
 
 
