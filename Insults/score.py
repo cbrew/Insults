@@ -7,9 +7,10 @@ import pandas
 import ml_metrics
 import os
 import numpy as np
+from insults import DataFile
 
 def score():
-	gold = pandas.read_table('Data/test_with_solutions.csv',sep=',')
+	gold = pandas.read_table(DataFile('Inputs','test_with_solutions.csv'),sep=',')
 	private = gold[gold.Usage=='PrivateTest'].Insult
 	public = gold[gold.Usage=='PublicTest'].Insult
 	data = []

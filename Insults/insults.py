@@ -67,6 +67,9 @@ def DataFile(category,name):
 	"""
 	return os.path.join('Data',category,name)
 
+def DataDirectory(category):
+	return os.path.join('Data',category)
+
 	
 class MySGDRegressor(linear_model.SGDRegressor):
 	"""
@@ -224,7 +227,7 @@ def clear_fold_info():
 	"""
 	Clear the information about folds. This is created during the tuning step.
 	"""
-	for fn in os.listdir(DataFile('Folds','')):
+	for fn in os.listdir(DataDirectory('Folds')):
 		os.unlink(DataFile('Folds',fn))
 
 
@@ -242,7 +245,7 @@ def choose_n_iterations(show=False):
 	work out how many iterations to use, using data stashed during tuning.
 	"""
 	df = None
-	for fn in os.listdir(DataFile('Folds','')):
+	for fn in os.listdir(DataDirectory('Folds')):
 		fold = pandas.read_table(DataFile('Folds',fn),sep=',',index_col='iterations')
 		if isinstance(df,pandas.DataFrame):
 			df = df.join(fold)
@@ -417,13 +420,16 @@ if __name__ == "__main__":
 	parser.add_argument('--sgd_max_iter','-smi',type=int,default=1000)
 	parser.add_argument('--sgd_n_iter_per_step','-sns',type=int,default=5)
 	parser.add_argument('--sgd_penalty','-sp',default="elasticnet",help='l1 or l2 or elasticnet (default: %{default}s)')
+
+	# other parameters.
+
 	parser.add_argument('--competition','-c',action='store_true',help='make predictions for the final stage of the competition')
 	parser.add_argument('--no_score','-ns',action='store_true',help='turn off print out of score at end' )
 	args = parser.parse_args()
 	
 
 	if args.competition:
-		logging.basicConfig(filename='Logs/final.log',mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+		logging.basicConfig(filename=DataFile('Logs','final.log'),mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 		for argset in competition_argsets:
 			run_prediction(parser=parser,args_in=argset,competition=True)
 	else:
