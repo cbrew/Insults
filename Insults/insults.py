@@ -70,6 +70,10 @@ def DataFile(category,name):
 def DataDirectory(category):
 	return os.path.join('Data',category)
 
+
+def LogFile(name):
+	return os.path.join('Logs',name)
+
 	
 class MySGDRegressor(linear_model.SGDRegressor):
 	"""
@@ -401,7 +405,7 @@ if __name__ == "__main__":
 						)	
 	parser.add_argument('--predictions','-p',default=None,help='destination for predictions (or None for default location)')
 	parser.add_argument('--logfile','-l',
-						default=DataFile('Logs','insults.log'),
+						default=Logfile('insults.log'),
 						help='name of logfile'
 						)	
 	parser.add_argument('--tune','-tu',
