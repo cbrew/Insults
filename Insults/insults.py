@@ -224,7 +224,7 @@ def clear_fold_info():
 	"""
 	Clear the information about folds. This is created during the tuning step.
 	"""
-	for fn in os.listdir(DataFile('Folds',''):
+	for fn in os.listdir(DataFile('Folds','')):
 		os.unlink(DataFile('Folds',fn))
 
 
