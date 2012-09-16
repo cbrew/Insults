@@ -397,7 +397,7 @@ if __name__ == "__main__":
 
 
 	parser = argparse.ArgumentParser(description="Generate a prediction about insults")
-	parser.add_argument('--trainfile','-T',default='Data/train.csv',help='file to train classifier on')
+	parser.add_argument('--trainfile','-T',default=DataFile('Inputs','train.csv'),help='file to train classifier on')
 	parser.add_argument(
 							'--testfile','-t',
 							default=DataFile('Inputs','test.csv'),
