@@ -335,10 +335,6 @@ def predict(args):
 	clf.steps[-1][-1].reset_args()
 	clf.fit(train.Comment,train.Insult)
 	ypred = clf.predict(leaderboard.Comment)
-
-	# we create a submission... needs fixing, doesn't work if thing predicted is not the original
-	# leaderboard data.
-	# submission = pandas.read_table('Data/sample_submission_null.csv',sep=',')
 	submission = pandas.DataFrame(
 			dict(Insult=ypred,Comment=leaderboard.Comment,Date=leaderboard.Date),
 			columns=('Insult','Date','Comment'))
@@ -346,7 +342,7 @@ def predict(args):
 	if args.predictions == None:
 		estimates = get_estimates()
 		for x in itertools.count(1):
-			filename = "submissions/submission%d.csv" % x
+			filename = DataFile("Submissions","submission%d.csv" % x)
 			if os.path.exists(filename):
 				next
 			else:			
