@@ -4,7 +4,9 @@ Code for the insults competition run by Kaggle for Impermium in August-September
 Prerequisites
 -------------
 
-Python 2.7.3 + scikit-learn 0.13-git + ml_metrics 0.1.1 + pandas 0.8.1 (+ matplotlib 1.2.x for plotting, but not needed to predict)
+Python 2.7.3 + scikit-learn 0.13-git + ml_metrics 0.1.1 + pandas 0.8.1 + concurrent.futures
+
+ (+ matplotlib 1.2.x for plotting, but not needed to predict)
 (all have licenses that permit commercial use)
 I ran on a four year old iMac with 4Gb of memory and dual core Intel processor.
 
@@ -43,6 +45,9 @@ import pylab as pl
 import argparse
 import sys
 import score
+from concurrent.futures import ThreadPoolExecutor,ProcessPoolExecutor
+import concurrent.futures
+
 
 
 
@@ -53,14 +58,10 @@ def make_full_training():
 	df.to_csv('Data/fulltrain.csv',index=False)
 
 
-def initialize(args):
-	"""
-	Set everything up.
-	"""
-	logging.basicConfig(filename=args.logfile,mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-	train = pandas.read_table(args.trainfile,sep=',')
-	leaderboard = pandas.read_table(args.testfile,sep=',')
-	clf = MyPipeline([
+
+
+def make_clf(args):
+	return MyPipeline([
 		    		('vect', feature_extraction.text.CountVectorizer(
 		    				lowercase=False,
 		    				analyzer='char',
@@ -73,18 +74,24 @@ def initialize(args):
 		    		# ('filter',linear_model.SGDRegressor(alpha=1e-5,penalty='l1',n_iter=200)),
 		    		# second SGD is for feature weighting...
 					("clf",MySGDRegressor(	alpha=args.sgd_alpha, 
-											penalty='elasticnet',
+											penalty=args.sgd_penalty,
 											learning_rate='constant',
-											eta0=0.005,
-											rho=0.90, 
-											max_iter=1600, 
-											n_iter_per_step=10))
+											eta0=args.sgd_eta0,
+											rho=args.sgd_rho, 
+											max_iter=args.sgd_max_iter, 
+											n_iter_per_step=args.sgd_n_iter_per_step))
 					])
 
 
 
-
-	return train,leaderboard,clf
+def initialize(args):
+	"""
+	Set everything up.
+	"""
+	logging.basicConfig(filename=args.logfile,mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+	train = pandas.read_table(args.trainfile,sep=',')
+	leaderboard = pandas.read_table(args.testfile,sep=',')
+	return train,leaderboard
 
 def scale_predictions(ypred):
 	"""
@@ -224,45 +231,67 @@ def choose_n_iterations(show=False):
 		pl.show()
 	chosen = fi.index[fi.argmax()]
 	logging.info("chose %d iterations, projected score %f" % (chosen,fi.max()))
-	return chosen
+	return chosen,fi.max()
 
 NFOLDS=15
 
-def tuning(clf):
+
+def tune_one_fold(i,train_i,test_i):
+	global train
+	clf = make_clf(args)
+	ftrain = train[train_i]
+	logging.info('fold %d' % i)
+	clf.fit(ftrain.Comment,ftrain.Insult)
+	ypred = clf.predict(ftrain.Comment) 
+	logging.info("%d train auc=%f" % (i, ml_metrics.auc(np.array(ftrain.Insult),ypred)))
+	ypred = clf.predict(train[test_i].Comment)
+	# record information about the auc at each stage of training.
+	xs,ys = clf.staged_auc(train[test_i].Comment,train[test_i].Insult)
+	xs = np.array(xs)
+	ys = np.array(ys)		
+	save_fold_info(i,xs,ys)
+	logging.info("saved info for fold %d" % i)
+
+def tuning(args):
 	"""
 	Train the model, while holding out folds for use in
 	estimating performance.
 
 	"""
 	logging.info("Tuning")
-	best_iters = []
-	best_iter = 0 # clf.steps[-1][-1].max_iter / 	clf.steps[-1][-1].n_iter_per_step	
 	kf = cross_validation.KFold(len(train.Insult),NFOLDS,indices=False)
 	clear_fold_info()
-	for i,(train_i,test_i) in enumerate(kf):
-		ftrain = train[train_i]
-		logging.info('fold %d' % i)
-		clf.fit(ftrain.Comment,ftrain.Insult)
-		ypred = clf.predict(ftrain.Comment) 
-		logging.info("%d train auc=%f" % (i, ml_metrics.auc(np.array(ftrain.Insult),ypred)))
-		ypred = clf.predict(train[test_i].Comment)
-		# record information about the auc at each stage of training.
-		xs,ys = clf.staged_auc(train[test_i].Comment,train[test_i].Insult)
-		xs = np.array(xs)
-		ys = np.array(ys)		
-		save_fold_info(i,xs,ys)
-		logging.info("saved info for fold %d" % i)
+	with ProcessPoolExecutor(max_workers=2) as executor:
+		future_to_fold = dict([(executor.submit(tune_one_fold,i,train_i,test_i),i) for i,(train_i,test_i) in enumerate(kf)])
+		for future in concurrent.futures.as_completed(future_to_fold):
+			fold = future_to_fold[future]
+			if future.exception() is not None:
+				logging.warning('%r generated an exception: %s' % (fold,
+                         	                            future.exception()))
+			else:
+				logging.info('fold %r  is finished' % (fold,))
+
 	logging.info('tuning complete')
 
-	
+def get_estimates():
+	if os.path.exists('Data/estimates.csv'):
+		v = pandas.read_table('Data/estimates.csv',sep=',')
+		return zip(v.submission,v.estimate)
+	else:
+		return []
 
-def predict(args,clf):
+def save_estimates(se):
+	submissions,estimates = zip(*se)
+	pandas.DataFrame(dict(submission=submissions,estimate=estimates)).to_csv('Data/estimates.csv', index=False)
+
+def predict(args):
 	"""
 	Train on training file, predict on test file. 
 	"""
 	logging.info("Starting predictions")
+	clf = make_clf(args)
 	# work out how long to train for final step.
-	clf.steps[-1][-1].max_iter = choose_n_iterations()
+	clf.steps[-1][-1].max_iter,estimated_score = choose_n_iterations()
 	clf.steps[-1][-1].reset_args()
 	clf.fit(train.Comment,train.Insult)
 	ypred = clf.predict(leaderboard.Comment)
@@ -272,12 +301,15 @@ def predict(args,clf):
 	submission['Insult'] = ypred
 
 	if args.predictions == None:
+		estimates = get_estimates()
 		for x in itertools.count(1):
 			filename = "submissions/submission%d.csv" % x
 			if os.path.exists(filename):
 				next
 			else:			
 				submission.to_csv(filename,index=False)
+				estimates.append((filename,estimated_score))
+				save_estimates(estimates)
 				logging.info('Saved %s' % filename)
 				break
 	else:
@@ -295,13 +327,14 @@ if __name__ == "__main__":
 	parser.add_argument('--sgd_alpha','-sa',type=float,default=3e-7)
 	parser.add_argument('--sgd_eta0','-se',type=float,default=0.005)
 	parser.add_argument('--sgd_rho','-sr',type=float,default=0.85)
+	parser.add_argument('--sgd_max_iter','-smi',type=int,default=1000)
+	parser.add_argument('--sgd_n_iter_per_step','-sns',type=int,default=10)
+	parser.add_argument('--sgd_penalty',default="elasticnet",help='l1 or l2 or elasticnet (default: %{default}s)')
 	args = parser.parse_args()
-	print args.sgd_alpha
-	train,leaderboard,clf = initialize(args)
-	print clf
-	if args.tune:
-		tuning(clf)
-	predict(args,clf)
+	print args
+	train,leaderboard = initialize(args)
+	if args.tune: tuning(args)
+	predict(args)
 	score.score()
 
 
