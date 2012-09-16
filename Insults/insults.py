@@ -44,7 +44,7 @@ import sys
 import score
 from concurrent.futures import ThreadPoolExecutor,ProcessPoolExecutor
 import concurrent.futures
-import ConfigParser
+import json
 
 
 # Dataflow
@@ -424,12 +424,13 @@ if __name__ == "__main__":
 
 
 	# this code is designed to play nice with Sumatra, which likes a single argument on command line
-	# pointing to a config file. So we make a config file containing command lines that we might otherwise 
+	# pointing to a config file. So we make a JSON config file containing command lines that we might otherwise 
 	# have typed.
 	param_file = sys.argv[1]
 	with open(param_file) as inf:
-		for line in param_file:
-			args = parser.parse_args(line.split())
+		params = json.load(inf)
+		for line in params['commands']:
+			args = parser.parse_args(line)
 			if args.competition:
 				logging.basicConfig(filename=DataFile('Logs','final.log'),mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 				for argset in competition_argsets:
