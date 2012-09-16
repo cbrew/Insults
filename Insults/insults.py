@@ -425,12 +425,11 @@ if __name__ == "__main__":
 
 	# this code is designed to play nice with Sumatra, which likes a single argument on command line
 	# pointing to a config file. So we make a JSON config file containing command lines that we might otherwise 
-	# have typed.
+	# have typed. A bit of tinkering is needed to make Sumatra like it.
 	param_file = sys.argv[1]
 	inf = open(param_file)
 	params = json.load(inf)
 	inf.close()
-	print params
 	for line in params['commands']:
 		args = parser.parse_args(line)
 		if args.competition:
