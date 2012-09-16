@@ -1,22 +1,21 @@
 """
-Code to track performance. Should really pick up the 
-estimate derived from cross-validation too.
+Code to track performance. 
 """
 
 import pandas
 import ml_metrics
 import os
 import numpy as np
-from insults import DataFile
+import insults
 
 def score():
-	gold = pandas.read_table(DataFile('Inputs','test_with_solutions.csv'),sep=',')
+	gold = pandas.read_table(insults.DataFile('Inputs','test_with_solutions.csv'),sep=',')
 	private = gold[gold.Usage=='PrivateTest'].Insult
 	public = gold[gold.Usage=='PublicTest'].Insult
 	data = []
-	for fn in os.listdir('submissions'):
+	for fn in os.listdir(insults.DataDirectory('Submissions')):
 			if fn[-4:] == ".csv":
-				guess = pandas.read_table(os.path.join('submissions',fn),sep=',')
+				guess = pandas.read_table(insults.DataFile('submissions',fn),sep=',')
 				pub_guess = guess.Insult[public.index]
 				priv_guess = guess.Insult[private.index]
 				data.append({"fn": fn[:-4],

@@ -426,7 +426,7 @@ if __name__ == "__main__":
 	# this code is designed to play nice with Sumatra, which likes a single argument on command line
 	# pointing to a config file. So we make a config file containing command lines that we might otherwise 
 	# have typed. A bit of tinkering is needed to make Sumatra like it.
-	# use of execfile is not nice, but Sumatra is useful, so...
+	# use of execfile is not nice, but Sumatra is useful, so...ok (and, if we wanted, we could take it away)
 	parameters={}
 	execfile(sys.argv[1],parameters)
 	
