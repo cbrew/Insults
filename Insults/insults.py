@@ -427,17 +427,20 @@ if __name__ == "__main__":
 	# pointing to a config file. So we make a JSON config file containing command lines that we might otherwise 
 	# have typed.
 	param_file = sys.argv[1]
-	with open(param_file) as inf:
-		params = json.load(inf)
-		for line in params['commands']:
-			args = parser.parse_args(line)
-			if args.competition:
-				logging.basicConfig(filename=DataFile('Logs','final.log'),mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-				for argset in competition_argsets:
-					run_prediction(parser=parser,args_in=argset,competition=True)
-			else:
-				logging.basicConfig(filename=args.logfile,mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-				run_prediction(parser=parser,args_in=args,competition=False)
+	inf = open(param_file)
+	params = json.load(inf)
+	inf.close()
+	print params
+	for line in params['commands']:
+		args = parser.parse_args(line)
+		if args.competition:
+			logging.basicConfig(filename=DataFile('Logs','final.log'),mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+			for argset in competition_argsets:
+				run_prediction(parser=parser,args_in=argset,competition=True)
+		else:
+			logging.basicConfig(filename=args.logfile,mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+			run_prediction(parser=parser,args_in=args,competition=False)
+
 
 
 
