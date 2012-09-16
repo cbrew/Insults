@@ -40,4 +40,4 @@ commands = [["--competition"]]
 What this does is to train on "fulltrain.csv" and test on "final.csv"
 
 show.py is a utility for seeing the learning curve that I used to select a training regime.
-score.py spits out some stats.
+score.py spits out some stats for the various submissions.
