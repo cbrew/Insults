@@ -425,6 +425,25 @@ if __name__ == "__main__":
 			'--no_score'],
 			)
 
+		tuning_argsets = (
+		[
+			"--tune",
+			"--sgd_alpha","1e-5"],
+
+		[
+			"--tune",
+			"--sgd_alpha","1e-6"],
+		[
+			"--tune",
+			"--sgd_alpha","5e-7"],
+		[
+			"--tune",
+			"--sgd_alpha","5e-6"],
+		[
+			"--tune",
+			"--sgd_alpha","1e-7"],
+		)
+
 
 
 	parser = argparse.ArgumentParser(description="Generate a prediction about insults")
@@ -455,6 +474,7 @@ if __name__ == "__main__":
 	# other parameters.
 
 	parser.add_argument('--competition','-c',action='store_true',help='make predictions for the final stage of the competition')
+	parser.add_argument('--comptune','-ct', action='store_true',help='tuning for final stage'))
 	parser.add_argument('--score','-sc',action='store_true',dest='score',help='turn on print out of score at end', default=True)
 	parser.add_argument('--no_score','-nsc',action='store_false',dest='score',help='turn off print out of score at end' )
 
@@ -471,6 +491,10 @@ if __name__ == "__main__":
 		if args.competition:
 			logging.basicConfig(filename=LogFile('final.log'),mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 			for argset in competition_argsets:
+				run_prediction(parser=parser,args_in=argset,competition=True)
+		elif args.competune:
+			logging.basicConfig(filename=args.logfile,mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+			for argset in tuning_argsets:
 				run_prediction(parser=parser,args_in=argset,competition=True)
 		else:
 			logging.basicConfig(filename=args.logfile,mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
