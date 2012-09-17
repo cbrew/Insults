@@ -379,7 +379,8 @@ def run_prediction(parser=None,args_in=None,competition=False):
 	train,leaderboard = initialize(args)
 	if args.tune: tuning(args)
 	predict(args)
-	score.score()
+	if args.score:
+		score.score()
 
 
 
@@ -424,13 +425,14 @@ if __name__ == "__main__":
 	# other parameters.
 
 	parser.add_argument('--competition','-c',action='store_true',help='make predictions for the final stage of the competition')
-	parser.add_argument('--no_score','-ns',action='store_true',help='turn off print out of score at end' )
+	parser.add_argument('--score','-sc',action='store_true',dest='score',help='turn on print out of score at end', default=True)
+	parser.add_argument('--no_score','-nsc',action='store_false',dest='score',help='turn off print out of score at end' )
 
 
 	# this code is designed to play nice with Sumatra, which likes a single argument on command line
 	# pointing to a config file. So we make a config file containing command lines that we might otherwise 
 	# have typed. A bit of tinkering is needed to make Sumatra like it.
-	# use of execfile is not nice, but Sumatra is useful, so...ok (and, if we wanted, we could take it away)
+	# use of execfile is not nice, but Sumatra is useful, so...ok (and this is a thin wrapper round command line anyway)
 	parameters={}
 	execfile(sys.argv[1],parameters)
 	

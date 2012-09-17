@@ -7,6 +7,7 @@ import ml_metrics
 import os
 import numpy as np
 import insults
+import sys
 
 def score():
 	gold = pandas.read_table(insults.DataFile('Inputs','test_with_solutions.csv'),sep=',')
