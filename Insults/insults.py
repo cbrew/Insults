@@ -426,22 +426,11 @@ if __name__ == "__main__":
 			)
 
 		tuning_argsets = (
-		[
-			"--tune",
-			"--sgd_alpha","1e-5"],
-
-		[
-			"--tune",
-			"--sgd_alpha","1e-6"],
-		[
-			"--tune",
-			"--sgd_alpha","5e-7"],
-		[
-			"--tune",
-			"--sgd_alpha","5e-6"],
-		[
-			"--tune",
-			"--sgd_alpha","1e-7"],
+		["--tune","--sgd_alpha","1e-5"],
+		["--tune","--sgd_alpha","3e-6"],
+		["--tune","--sgd_alpha","1e-7"],
+		["--tune","--sgd_alpha","3e-8"],
+		["--tune","--sgd_alpha","1e-8"],
 		)
 
 
