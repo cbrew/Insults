@@ -425,7 +425,7 @@ if __name__ == "__main__":
 		'--no_score'],
 		)
 
-		tuning_argsets = (
+	tuning_argsets = (
 		["--tune","--sgd_alpha","1e-5"],
 		["--tune","--sgd_alpha","3e-6"],
 		["--tune","--sgd_alpha","1e-7"],
