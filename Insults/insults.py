@@ -481,7 +481,7 @@ if __name__ == "__main__":
 			logging.basicConfig(filename=LogFile('final.log'),mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 			for argset in competition_argsets:
 				run_prediction(parser=parser,args_in=argset,competition=True)
-		elif args.competune:
+		elif args.comptune:
 			logging.basicConfig(filename=args.logfile,mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 			for argset in tuning_argsets:
 				run_prediction(parser=parser,args_in=argset,competition=True)
