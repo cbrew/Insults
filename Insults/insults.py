@@ -439,7 +439,7 @@ if __name__ == "__main__":
 	for line in parameters['commands']:
 		args = parser.parse_args(line)
 		if args.competition:
-			logging.basicConfig(filename=DataFile('Logs','final.log'),mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+			logging.basicConfig(filename=LogFile('final.log'),mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 			for argset in competition_argsets:
 				run_prediction(parser=parser,args_in=argset,competition=True)
 		else:
