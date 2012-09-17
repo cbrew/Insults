@@ -389,9 +389,39 @@ if __name__ == "__main__":
 	competition_argsets = (
 		[
 			"--tune",
+			"--sgd_alpha","1e-5",
 			"--trainfile",DataFile('Inputs',"fulltrain.csv"),
 			"--testfile",DataFile('Inputs',"final.csv"),
 			'--predictions',DataFile('Final','final1.csv'),
+			'--no_score'],
+
+		[
+			"--tune",
+			"--sgd_alpha","1e-6",
+			"--trainfile",DataFile('Inputs',"fulltrain.csv"),
+			"--testfile",DataFile('Inputs',"final.csv"),
+			'--predictions',DataFile('Final','final2.csv'),
+			'--no_score'],
+		[
+			"--tune",
+			"--sgd_alpha","5e-7",
+			"--trainfile",DataFile('Inputs',"fulltrain.csv"),
+			"--testfile",DataFile('Inputs',"final.csv"),
+			'--predictions',DataFile('Final','final3.csv'),
+			'--no_score'],
+		[
+			"--tune",
+			"--sgd_alpha","5e-6",
+			"--trainfile",DataFile('Inputs',"fulltrain.csv"),
+			"--testfile",DataFile('Inputs',"final.csv"),
+			'--predictions',DataFile('Final','final4.csv'),
+			'--no_score'],
+		[
+			"--tune",
+			"--sgd_alpha","1e-7",
+			"--trainfile",DataFile('Inputs',"fulltrain.csv"),
+			"--testfile",DataFile('Inputs',"final.csv"),
+			'--predictions',DataFile('Final','final5.csv'),
 			'--no_score'],
 			)
 
@@ -415,11 +445,11 @@ if __name__ == "__main__":
 						)
 
 	# linear classifier parameters
-	parser.add_argument('--sgd_alpha','-sa',type=float,default=3e-7)
+	parser.add_argument('--sgd_alpha','-sa',type=float,default=1e-5)
 	parser.add_argument('--sgd_eta0','-se',type=float,default=0.005)
-	parser.add_argument('--sgd_rho','-sr',type=float,default=0.99)
+	parser.add_argument('--sgd_rho','-sr',type=float,default=0.999)
 	parser.add_argument('--sgd_max_iter','-smi',type=int,default=1000)
-	parser.add_argument('--sgd_n_iter_per_step','-sns',type=int,default=5)
+	parser.add_argument('--sgd_n_iter_per_step','-sns',type=int,default=20)
 	parser.add_argument('--sgd_penalty','-sp',default="elasticnet",help='l1 or l2 or elasticnet (default: %{default}s)')
 
 	# other parameters.
