@@ -463,7 +463,7 @@ if __name__ == "__main__":
 	# other parameters.
 
 	parser.add_argument('--competition','-c',action='store_true',help='make predictions for the final stage of the competition')
-	parser.add_argument('--comptune','-ct', action='store_true',help='tuning for final stage'))
+	parser.add_argument('--comptune','-ct', action='store_true',help='tuning for final stage')
 	parser.add_argument('--score','-sc',action='store_true',dest='score',help='turn on print out of score at end', default=True)
 	parser.add_argument('--no_score','-nsc',action='store_false',dest='score',help='turn off print out of score at end' )
 
