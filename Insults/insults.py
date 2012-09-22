@@ -27,6 +27,7 @@ Ideas
 
 - use character n-grams because they are robust and simple.
 - tune SGD carefully.
+- for practice, learn to use picloud.
 
 
 """
@@ -55,23 +56,27 @@ import concurrent.futures
 # labeled test file + model -> predictions -> score
 # unlabeled test file + model -> predictions
 
-# Storage plan
-# ------------
-# Everything should be created inside a directory called Data, because that is what
-# Sumatra (packages.python.org/Sumatra) expects.
 
-
-def DataFile(category,name):
+def DataFile(category,name=None):
 	"""
 	Create a filename within Data
 	"""
-	return os.path.join('Data',category,name)
+	if name == None:
+		return os.path.join('Data',category)
+	else:
+		return os.path.join('Data',category,name)
 
 def DataDirectory(category):
+	"""
+	Create a directory within Data
+	"""
 	return os.path.join('Data',category)
 
 
 def LogFile(name):
+	"""
+	Create a log file.
+	"""
 	return os.path.join('Logs',name)
 
 	
@@ -89,7 +94,8 @@ class MySGDRegressor(linear_model.SGDRegressor):
 		self.penalty = penalty
 		self.reset_args()
 	def reset_args(self):
-		# enforce condition that n_iter_per_step must be a factor of n_iter
+		"""
+		"""
 		assert self.max_iter % self.n_iter_per_step == 0
 		linear_model.SGDRegressor.__init__(self,
 											alpha=self.alpha,
@@ -196,10 +202,6 @@ def make_clf(args):
 		    				)
 		    		),
 		    		('tfidf', feature_extraction.text.TfidfTransformer(sublinear_tf=True,norm='l2')),
-		    		# first SGD is for sparsity, will be tuned with alpha as large as possible...
-		    		# currently not used...
-		    		# ('filter',linear_model.SGDRegressor(alpha=1e-5,penalty='l1',n_iter=200)),
-		    		# second SGD is for feature weighting...
 					("clf",MySGDRegressor(	alpha=args.sgd_alpha, 
 											penalty=args.sgd_penalty,
 											learning_rate='constant',
@@ -227,39 +229,12 @@ def scale_predictions(ypred):
 	ypred[ypred < 0] = 0
 	return ypred
 
-def clear_fold_info():
-	"""
-	Clear the information about folds. This is created during the tuning step.
-	"""
-	for fn in os.listdir(DataDirectory('Folds')):
-		os.unlink(DataFile('Folds',fn))
 
-
-def save_fold_info(i,xs,ys):
-	"""
-	The fold information is stored in a simple format. These predictions are based on several 
-	folds of cross-validation over the training set. 
-	"""
-	df = pandas.DataFrame({'iterations':xs,
-							('auc%d' % i):ys})
-	df.to_csv(DataFile('Folds','fold%d.csv' %i),index=False)
-
-def choose_n_iterations(show=False):
+def choose_n_iterations(df,show=False):
 	"""
 	work out how many iterations to use, using data stashed during tuning.
 	"""
-	df = None
-	for fn in os.listdir(DataDirectory('Folds')):
-		fold = pandas.read_table(DataFile('Folds',fn),sep=',',index_col='iterations')
-		if isinstance(df,pandas.DataFrame):
-			df = df.join(fold)
-			
-		else:
-			df = fold
 
-	if len(df.columns) == 0:
-		logging.error('cannot determine number of iterations until tune step has been done')
-		sys.exit()
 
 	fi = df.mean(axis=1)
 	if show:
@@ -288,12 +263,11 @@ def tune_one_fold(i,train_i,test_i):
 	xs,ys = clf.staged_auc(train[test_i].Comment,train[test_i].Insult)
 	xs = np.array(xs)
 	ys = np.array(ys)		
-	save_fold_info(i,xs,ys)
-	logging.info("saved info for fold %d" % i)
+	return pandas.DataFrame({ ('auc%d' % i):ys},index=xs)
 
 
 
-NFOLDS=15
+NFOLDS=3
 
 def initialize(args):
 	"""
@@ -311,31 +285,54 @@ def tuning(args):
 	"""
 	logging.info("Tuning")
 	kf = cross_validation.KFold(len(train.Insult),NFOLDS,indices=False)
-	clear_fold_info()
+
+
+	# the result of tuning is a dataframe with a column of auc figures for each fold
+	df = None
 
 	# if we had more than 2 cores, max_workers could be > 2. For now 2 is comfortable...
 	with ProcessPoolExecutor(max_workers=2) as executor:
 		future_to_fold = dict([(executor.submit(tune_one_fold,i,train_i,test_i),i) for i,(train_i,test_i) in enumerate(kf)])
 		for future in concurrent.futures.as_completed(future_to_fold):
 			fold = future_to_fold[future]
+
 			if future.exception() is not None:
 				logging.warning('%r generated an exception: %s' % (fold,
                          	                            future.exception()))
 			else:
+				if isinstance(df,pandas.DataFrame):
+					df = df.join(future.result())
+			
+				else:	
+					df = future.result()
 				logging.info('fold %r  is finished' % (fold,))
 
 	logging.info('tuning complete')
+	return df
 
 
+def save_folds(folds):
+	"""
+	We'll want to stash the fold information somewhere.
+	But before doing that, move the code that produces the info
+	into tuning from choose_n_iterations.
+	"""
+	folds.to_csv(DataFile('folds.csv'),index=True,index_label='iterations')
 
-def predict(args):
+def saved_folds():
+	"""
+	"""
+	return pandas.read_table(DataFile('folds.csv'),sep=',',index_col='iterations')
+
+def predict(folds,args):
 	"""
 	Train on training file, predict on test file. 
 	"""
 	logging.info("Starting predictions")
+
 	clf = make_clf(args)
 	# work out how long to train for final step.
-	clf.steps[-1][-1].max_iter,estimated_score = choose_n_iterations()
+	clf.steps[-1][-1].max_iter,estimated_score = choose_n_iterations(folds)
 	clf.steps[-1][-1].reset_args()
 	clf.fit(train.Comment,train.Insult)
 	ypred = clf.predict(leaderboard.Comment)
@@ -377,8 +374,12 @@ def run_prediction(parser=None,args_in=None,competition=False):
 		args = args_in
 
 	train,leaderboard = initialize(args)
-	if args.tune: tuning(args)
-	predict(args)
+	if args.tune:
+		folds = tuning(args)
+		save_folds(folds)
+	else:
+		folds = saved_folds()
+	predict(folds,args)
 	if args.score:
 		score.score()
 
@@ -488,26 +489,21 @@ if __name__ == "__main__":
 	parser.add_argument('--no_score','-nsc',action='store_false',dest='score',help='turn off print out of score at end' )
 
 
-	# this code is designed to play nice with Sumatra, which likes a single argument on command line
-	# pointing to a config file. So we make a config file containing command lines that we might otherwise 
-	# have typed. A bit of tinkering is needed to make Sumatra like it.
-	# use of execfile is not nice, but Sumatra is useful, so...ok (and this is a thin wrapper round command line anyway)
-	parameters={}
-	execfile(sys.argv[1],parameters)
 	
-	for line in parameters['commands']:
-		args = parser.parse_args(line)
-		if args.competition:
-			logging.basicConfig(filename=LogFile('final.log'),mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-			for argset in competition_argsets:
-				run_prediction(parser=parser,args_in=argset,competition=True)
-		elif args.comptune:
-			logging.basicConfig(filename=args.logfile,mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-			for argset in tuning_argsets:
-				run_prediction(parser=parser,args_in=argset,competition=True)
-		else:
-			logging.basicConfig(filename=args.logfile,mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-			run_prediction(parser=parser,args_in=args,competition=False)
+	
+
+	args = parser.parse_args(   )
+	if args.competition:
+		logging.basicConfig(filename=LogFile('final.log'),mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+		for argset in competition_argsets:
+			run_prediction(parser=parser,args_in=argset,competition=True)
+	elif args.comptune:
+		logging.basicConfig(filename=args.logfile,mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+		for argset in tuning_argsets:
+			run_prediction(parser=parser,args_in=argset,competition=True)
+	else:
+		logging.basicConfig(filename=args.logfile,mode='w',format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+		run_prediction(parser=parser,args_in=args,competition=False)
 
 
 
