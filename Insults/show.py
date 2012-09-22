@@ -1,3 +1,3 @@
 import insults
 
-print insults.choose_n_iterations(show=True)
+print insults.choose_n_iterations(insults.saved_folds(), show=True)
