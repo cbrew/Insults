@@ -267,7 +267,7 @@ def tune_one_fold(i,train_i,test_i):
 
 
 
-NFOLDS=3
+NFOLDS=15
 
 def initialize(args):
 	"""
@@ -276,6 +276,12 @@ def initialize(args):
 	train = pandas.read_table(args.trainfile,sep=',')
 	leaderboard = pandas.read_table(args.testfile,sep=',')
 	return train,leaderboard
+
+def join_frames(dfs):
+	df = dfs[0]
+	for df2 in dfs[1:]:
+		df = df.join(df2)
+	return df
 
 def tuning(args):
 	"""
@@ -287,27 +293,15 @@ def tuning(args):
 	kf = cross_validation.KFold(len(train.Insult),NFOLDS,indices=False)
 
 
-	# the result of tuning is a dataframe with a column of auc figures for each fold
-	df = None
-
 	# if we had more than 2 cores, max_workers could be > 2. For now 2 is comfortable...
 	with ProcessPoolExecutor(max_workers=2) as executor:
 		future_to_fold = dict([(executor.submit(tune_one_fold,i,train_i,test_i),i) for i,(train_i,test_i) in enumerate(kf)])
-		for future in concurrent.futures.as_completed(future_to_fold):
-			fold = future_to_fold[future]
-
-			if future.exception() is not None:
-				logging.warning('%r generated an exception: %s' % (fold,
-                         	                            future.exception()))
-			else:
-				if isinstance(df,pandas.DataFrame):
-					df = df.join(future.result())
-			
-				else:	
-					df = future.result()
-				logging.info('fold %r  is finished' % (fold,))
+		# df = join_frames(executor.map(SOMETHING    ,enumerate(kf)))
+		df =  join_frames([future.result() for future in concurrent.futures.as_completed(future_to_fold)])
+		
 
 	logging.info('tuning complete')
+
 	return df
 
 
