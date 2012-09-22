@@ -11,7 +11,6 @@ Python 2.7.3 + scikit-learn 0.13-git + ml_metrics 0.1.1 + pandas 0.8.1 + concurr
  (+ matplotlib 1.2.x for plotting, but not needed to predict)
 (all have licenses that permit commercial use)
 
-To make tracking of experiments easy, we use Sumatra 
 
 
 Hardware
@@ -19,7 +18,6 @@ Hardware
 
 I ran on a four year old iMac with 4Gb of memory and dual core Intel processor.
 
-Sumatra requires the datafiles in ./Data
 
 
 Ideas
@@ -27,8 +25,6 @@ Ideas
 
 - use character n-grams because they are robust and simple.
 - tune SGD carefully.
-- for practice, learn to use picloud.
-
 
 """
 
@@ -307,14 +303,13 @@ def tuning(args):
 
 def save_folds(folds):
 	"""
-	We'll want to stash the fold information somewhere.
-	But before doing that, move the code that produces the info
-	into tuning from choose_n_iterations.
+	Stash the fold information.
 	"""
 	folds.to_csv(DataFile('folds.csv'),index=True,index_label='iterations')
 
 def saved_folds():
 	"""
+	Get the fold information back.
 	"""
 	return pandas.read_table(DataFile('folds.csv'),sep=',',index_col='iterations')
 
